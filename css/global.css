@@ -97,3 +97,7 @@ table {
     transition-duration: 0.001ms !important;
   }
 }
+
+[hidden] {
+  display: none !important;
+}
