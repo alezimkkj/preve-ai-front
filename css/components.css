@@ -3,6 +3,10 @@
   padding: 56px 0;
 }
 
+section.section.page-hero#search-section, section.section.page-hero#section-funciona {
+  padding-bottom: 10px;
+}
+
 .section--alt {
   background: var(--color-bg-alt);
 }
@@ -27,6 +31,16 @@
   margin-top: 10px;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+/* Seção do fluxo (Da coleta ao alerta): o texto de apoio ocupa a largura da seção,
+   enquanto o título mantém a quebra de linha original */
+.section-heading:has(+ .pipeline) {
+  max-width: none;
+}
+
+.section-heading:has(+ .pipeline) h2 {
+  max-width: 38.4rem;
 }
 
 .two-col {
@@ -747,6 +761,10 @@
   position: relative;
   max-width: 420px;
   margin-top: 20px;
+}
+
+.municipality-header {
+  margin: 8px 0 20px;
 }
 
 .municipality-search__field {
