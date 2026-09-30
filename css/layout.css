@@ -249,6 +249,7 @@
 .site-footer__bottom p {
   font-size: 0.78rem;
   color: var(--color-slate);
+  text-align: center;
 }
 
 /* Hero */

@@ -223,20 +223,24 @@
   border-radius: var(--radius-lg);
   padding: 26px;
   box-shadow: var(--shadow-soft);
+  /* título e itens distribuídos com o mesmo espaçamento entre todos,
+     do topo até perto da base do quadro */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
 }
 
 .problem-card h3 {
   font-size: 1.05rem;
-  margin-bottom: 14px;
+  margin: 0;
 }
 
 .problem-card ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: contents; /* os <li> entram direto na distribuição do card */
   font-size: 0.92rem;
   line-height: 1.5;
   color: var(--color-ink-soft);
@@ -425,10 +429,11 @@
 
 /* Early warning */
 .early-warning {
+  --ew-h2-size: clamp(1.5rem, 3vw, 2rem);
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
   gap: 30px;
-  align-items: center;
+  align-items: stretch;
 }
 
 @media (max-width: 800px) {
@@ -437,11 +442,67 @@
   }
 }
 
+.early-warning .section-heading h2 {
+  font-size: var(--ew-h2-size);
+}
+
+/* altura de linha fixa para o cálculo do alinhamento abaixo ser exato */
+.early-warning__text .section-heading__eyebrow {
+  line-height: 1.25;
+}
+
+/* espaçamento padronizado: título → texto e texto → botão com o mesmo valor */
+.early-warning__text .section-heading {
+  margin-bottom: 20px;
+}
+
+.early-warning__text .section-heading__desc {
+  margin-top: 20px;
+}
+
+/* Os cartões vão do topo das letras do título até a base do botão:
+   margem superior = eyebrow (0.8rem x 1.25 + 6px) + folga até o topo das letras do h2 */
 .early-warning__levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: calc(1rem + 6px + var(--ew-h2-size) * 0.22);
+}
+
+@media (max-width: 800px) {
+  .early-warning__levels {
+    margin-top: 0;
+  }
+}
+
+.level-tile {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 12px;
-  align-items: flex-start;
+  min-height: 132px;
+  padding: 22px 10px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.level-tile--normal {
+  background: var(--color-risk-normal-bg);
+  color: var(--color-risk-normal);
+}
+
+.level-tile--atencao {
+  background: var(--color-risk-atencao-bg);
+  color: var(--color-risk-atencao);
+}
+
+.level-tile--critico {
+  background: var(--color-risk-critico-bg);
+  color: var(--color-risk-critico);
 }
 
 /* Project page */
