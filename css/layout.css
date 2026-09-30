@@ -331,7 +331,7 @@
   left: 0;
   top: calc(var(--hero-h1-size) * 0.22 - 2px);
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1rem;
   line-height: 1;
   font-weight: 600;
   color: var(--color-brand-700);

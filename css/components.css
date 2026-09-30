@@ -198,7 +198,7 @@
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 36px;
-  align-items: start;
+  align-items: stretch;
 }
 
 @media (max-width: 800px) {
@@ -210,6 +210,11 @@
 .problem-grid p {
   line-height: 1.65;
   margin-bottom: 14px;
+}
+
+/* sem margem no último parágrafo, para o card acompanhar exatamente a altura do texto */
+.problem-grid > div > p:last-child {
+  margin-bottom: 0;
 }
 
 .problem-card {
