@@ -1,82 +1,528 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="PrevêAÍ — protótipo de monitoramento hidrometeorológico e alertas de inundação para Três Coroas/RS." />
-    <title>Painel administrativo — PrevêAÍ</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/components.css" />
-  </head>
-  <body>
-    <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
-    <div class="app-shell">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <meta name="description"
+    content="PrevêAÍ — protótipo de monitoramento hidrometeorológico e alertas de inundação para Três Coroas/RS." />
+
+  <title>Painel administrativo — PrevêAÍ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+
+<body>
+  <a href="#conteudo-principal" class="skip-link">
+    Pular para o conteúdo principal
+  </a>
+
+  <div class="app-shell">
     <header class="site-header">
       <div class="container site-header__inner">
-        <a href="index.html" class="brand" aria-label="PrevêAÍ — página inicial"><span class="brand__mark" aria-hidden="true"><img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" /></span><span class="brand__name">PrevêAÍ</span></a>
+        <a href="index.html" class="brand" aria-label="PrevêAÍ — página inicial">
+          <span class="brand__mark" aria-hidden="true">
+            <img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" />
+          </span>
+          <span class="brand__name">PrevêAÍ</span>
+        </a>
+
         <nav class="site-nav" aria-label="Navegação principal">
           <a href="index.html" class="site-nav__link">Início</a>
           <a href="projeto.html" class="site-nav__link">Projeto</a>
-          <a href="monitoramento.html" class="site-nav__link">Monitoramento</a>
-          <a href="como-funciona.html" class="site-nav__link">Como funciona</a>
+          <a href="monitoramento.html" class="site-nav__link">
+            Monitoramento
+          </a>
+          <a href="como-funciona.html" class="site-nav__link">
+            Como funciona
+          </a>
         </nav>
+
         <div class="site-header__actions">
-          <button type="button" class="icon-button" data-action="toggle-theme" aria-label="Ativar tema escuro"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+          <button type="button" class="icon-button" data-action="toggle-theme" aria-label="Ativar tema escuro">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              focusable="false">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          </button>
+
           <div class="admin-quick" data-admin-session hidden>
-            <a href="admin.html" class="button button--ghost button--sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Painel</a>
-            <button type="button" class="icon-button" data-action="logout" aria-label="Encerrar sessão de administrador"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></button>
+            <a href="admin.html" class="button button--ghost button--sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                focusable="false">
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              Painel
+            </a>
+
+            <button type="button" class="icon-button" data-action="logout"
+              aria-label="Encerrar sessão de administrador">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                focusable="false">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" x2="9" y1="12" y2="12" />
+              </svg>
+            </button>
           </div>
-          <a href="login.html" class="button button--primary button--sm" data-admin-login>Área administrativa</a>
+
+          <a href="login.html" class="button button--primary button--sm" data-admin-login>
+            Área administrativa
+          </a>
         </div>
       </div>
     </header>
-      <main id="conteudo-principal" class="app-main">
-<div class="page-admin">
-<section class="section page-hero page-hero--admin"><div class="container admin-header"><div>
-<div class="section-heading"><p class="section-heading__eyebrow">Gerenciamento de alertas do PrevêAÍ</p><h2>Painel administrativo</h2></div>
-<span class="admin-badge"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Administrador <span id="admin-user"></span> — modo demonstração</span></div>
-<button type="button" class="button button--primary" id="create-alert"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Criar novo alerta</button></div></section>
-<section class="section" style="padding-top:0"><div class="container">
-<div class="summary-grid"><div class="summary-card"><span class="summary-card__label">Alertas ativos</span><span class="summary-card__value" id="sum-active">—</span></div><div class="summary-card"><span class="summary-card__label">Alertas criados hoje</span><span class="summary-card__value" id="sum-today">—</span></div><div class="summary-card"><span class="summary-card__label">Municípios com alertas</span><span class="summary-card__value" id="sum-mun">—</span></div><div class="summary-card"><span class="summary-card__label">Último alerta</span><span class="summary-card__value summary-card__value--sm" id="sum-latest">—</span></div></div>
-<div class="admin-filters" role="group" aria-label="Filtrar alertas"><button type="button" class="chip is-active" data-filter="todos" aria-pressed="true">Todos</button><button type="button" class="chip" data-filter="ativos" aria-pressed="false">Ativos</button><button type="button" class="chip" data-filter="encerrados" aria-pressed="false">Encerrados</button><button type="button" class="chip" data-filter="normal" aria-pressed="false">Normal</button><button type="button" class="chip" data-filter="atencao" aria-pressed="false">Atenção</button><button type="button" class="chip" data-filter="critico" aria-pressed="false">Alerta crítico</button></div>
-<p class="empty-state" id="empty-filter" hidden>Nenhum alerta encontrado para este filtro.</p>
-<div class="admin-table" role="table" aria-label="Lista de alertas" id="alerts-table"><div class="admin-table__head" role="row"><span role="columnheader">Nível</span><span role="columnheader">Município</span><span role="columnheader">Título</span><span role="columnheader">Data</span><span role="columnheader">Status</span><span role="columnheader">Ações</span></div></div>
-<div class="empty-state empty-state--full" id="empty-all" hidden><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><p>Nenhum alerta cadastrado ainda. Crie o primeiro alerta para começar.</p></div>
-</div></section></div>
-      </main>
-<footer class="site-footer"><div class="container site-footer__inner"><div class="site-footer__brand"><span class="brand__mark" aria-hidden="true"><img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" /></span><div><strong>PrevêAÍ</strong><p>Protótipo de pesquisa acadêmica em monitoramento hidrometeorológico</p></div></div><div class="site-footer__cols"><div><h3>Projeto</h3><ul><li><a href="projeto.html">Sobre o projeto</a></li><li><a href="como-funciona.html">Como funciona</a></li><li><a href="monitoramento.html">Monitoramento</a></li></ul></div><div><h3>Região de estudo</h3><ul><li>Três Coroas/RS</li><li>Bacia do Rio Paranhana</li></ul></div><div><h3>Links</h3><ul><li><span class="footer-placeholder">Link do repositório (em breve)</span></li><li><span class="footer-placeholder">Publicação da pesquisa (em breve)</span></li></ul></div></div></div><div class="site-footer__bottom container"><p>© 2026 PrevêAÍ — projeto de pesquisa acadêmica sobre previsão de inundações. Todos os dados de monitoramento exibidos são demonstrativos.</p></div></footer>
+
+    <main id="conteudo-principal" class="app-main">
+      <div class="page-admin">
+        <section class="section page-hero page-hero--admin">
+          <div class="container admin-header">
+            <div>
+              <div class="section-heading">
+                <p class="section-heading__eyebrow">
+                  Gerenciamento de alertas do PrevêAÍ
+                </p>
+
+                <h2>Painel administrativo</h2>
+              </div>
+
+              <span class="admin-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true" focusable="false">
+                  <path
+                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+                Administrador
+                <span id="admin-user"></span>
+                — modo demonstração
+              </span>
+            </div>
+
+            <button type="button" class="button button--primary" id="create-alert">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                focusable="false">
+                <path d="M5 12h14" />
+                <path d="M12 5v14" />
+              </svg>
+              Criar novo alerta
+            </button>
+          </div>
+        </section>
+
+        <section class="section" style="padding-top: 0">
+          <div class="container">
+            <div class="summary-grid">
+              <div class="summary-card">
+                <span class="summary-card__label">Alertas ativos</span>
+                <span class="summary-card__value" id="sum-active">
+                  —
+                </span>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-card__label">
+                  Alertas criados hoje
+                </span>
+                <span class="summary-card__value" id="sum-today">
+                  —
+                </span>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-card__label">
+                  Municípios com alertas
+                </span>
+                <span class="summary-card__value" id="sum-mun">
+                  —
+                </span>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-card__label">Último alerta</span>
+                <span class="summary-card__value summary-card__value--sm" id="sum-latest">
+                  —
+                </span>
+              </div>
+            </div>
+
+            <div class="admin-filters" role="group" aria-label="Filtrar alertas">
+              <button type="button" class="chip is-active" data-filter="todos" aria-pressed="true">
+                Todos
+              </button>
+
+              <button type="button" class="chip" data-filter="ativos" aria-pressed="false">
+                Ativos
+              </button>
+
+              <button type="button" class="chip" data-filter="encerrados" aria-pressed="false">
+                Encerrados
+              </button>
+
+              <button type="button" class="chip" data-filter="normal" aria-pressed="false">
+                Normal
+              </button>
+
+              <button type="button" class="chip" data-filter="atencao" aria-pressed="false">
+                Atenção
+              </button>
+
+              <button type="button" class="chip" data-filter="critico" aria-pressed="false">
+                Alerta crítico
+              </button>
+            </div>
+
+            <p class="empty-state" id="empty-filter" hidden>
+              Nenhum alerta encontrado para este filtro.
+            </p>
+
+            <div class="admin-table" role="table" aria-label="Lista de alertas" id="alerts-table">
+              <div class="admin-table__head" role="row">
+                <span role="columnheader">Nível</span>
+                <span role="columnheader">Município</span>
+                <span role="columnheader">Título</span>
+                <span role="columnheader">Data</span>
+                <span role="columnheader">Status</span>
+                <span role="columnheader">Ações</span>
+              </div>
+            </div>
+
+            <div class="empty-state empty-state--full" id="empty-all" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                focusable="false">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+              </svg>
+
+              <p>
+                Nenhum alerta cadastrado ainda. Crie o primeiro alerta para
+                começar.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <div class="site-footer__brand">
+          <span class="brand__mark" aria-hidden="true">
+            <img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" />
+          </span>
+
+          <div>
+            <strong>PrevêAÍ</strong>
+            <p>
+              Protótipo de pesquisa acadêmica em monitoramento
+              hidrometeorológico
+            </p>
+          </div>
+        </div>
+
+        <div class="site-footer__cols">
+          <div>
+            <h3>Projeto</h3>
+            <ul>
+              <li>
+                <a href="projeto.html">Sobre o projeto</a>
+              </li>
+              <li>
+                <a href="como-funciona.html">Como funciona</a>
+              </li>
+              <li>
+                <a href="monitoramento.html">Monitoramento</a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Região de estudo</h3>
+            <ul>
+              <li>Três Coroas/RS</li>
+              <li>Bacia do Rio Paranhana</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Links</h3>
+            <ul>
+              <li>
+                <span class="footer-placeholder">
+                  Link do repositório (em breve)
+                </span>
+              </li>
+              <li>
+                <span class="footer-placeholder">
+                  Publicação da pesquisa (em breve)
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom container">
+        <p>
+          © 2026 PrevêAÍ — projeto de pesquisa acadêmica sobre previsão de
+          inundações. Todos os dados de monitoramento exibidos são
+          demonstrativos.
+        </p>
+      </div>
+    </footer>
+
     <nav class="bottom-nav" aria-label="Navegação principal (móvel)">
-      <a href="index.html" class="bottom-nav__item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span></a>
-      <a href="projeto.html" class="bottom-nav__item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Projeto</span></a>
-      <a href="monitoramento.html" class="bottom-nav__item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg><span>Monitorar</span></a>
-      <a href="como-funciona.html" class="bottom-nav__item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>Funciona</span></a>
-      <a href="admin.html" class="bottom-nav__item is-active" data-admin-nav><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span>Painel</span></a>
+      <a href="index.html" class="bottom-nav__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span>Início</span>
+      </a>
+
+      <a href="projeto.html" class="bottom-nav__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+          <path d="M10 9H8" />
+          <path d="M16 13H8" />
+          <path d="M16 17H8" />
+        </svg>
+        <span>Projeto</span>
+      </a>
+
+      <a href="monitoramento.html" class="bottom-nav__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path
+            d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+        </svg>
+        <span>Monitorar</span>
+      </a>
+
+      <a href="como-funciona.html" class="bottom-nav__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <path d="M12 17h.01" />
+        </svg>
+        <span>Funciona</span>
+      </a>
+
+      <a href="admin.html" class="bottom-nav__item is-active" data-admin-nav>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path
+            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        <span>Painel</span>
+      </a>
     </nav>
 
     <div class="dialog-overlay" id="alert-dialog" hidden>
-      <div class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="alert-dialog-title" style="max-width:620px">
-        <div class="dialog-panel__header"><h2 id="alert-dialog-title">Criar novo alerta</h2><button type="button" class="icon-button" data-close aria-label="Fechar"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
-        <div class="dialog-panel__body"><form class="alert-form" id="alert-form" novalidate><div class="form-grid"><div class="form-field"><label for="municipality">Município</label><select id="municipality"><option value="Três Coroas" selected>Três Coroas</option><option value="Igrejinha">Igrejinha</option><option value="Taquara">Taquara</option><option value="Gramado">Gramado</option><option value="Canela">Canela</option></select><span class="field-error" data-err="municipality" hidden></span></div><div class="form-field"><label for="level">Nível do alerta</label><select id="level"><option value="normal" selected>Normal</option><option value="atencao">Atenção</option><option value="critico">Alerta crítico</option></select></div></div><div class="form-field"><label for="title">Título</label><input id="title" type="text" value="" placeholder="Ex.: Elevação do nível do Rio Paranhana" /><span class="field-error" data-err="title" hidden></span></div><div class="form-field"><label for="message">Mensagem</label><textarea id="message" rows="4" placeholder="Descreva a situação monitorada e as recomendações relevantes."></textarea><span class="field-error" data-err="message" hidden></span></div><div class="form-grid"><div class="form-field"><label for="riverLevel">Nível do rio (m) — opcional</label><input id="riverLevel" type="number" step="0.01" min="0" value="" /></div><div class="form-field"><label for="rainfall">Precipitação acumulada (mm) — opcional</label><input id="rainfall" type="number" step="0.1" min="0" value="" /></div></div><div class="form-grid"><div class="form-field"><label for="issuedAt">Data/hora de emissão</label><input id="issuedAt" type="datetime-local" value="2026-09-29T19:40" /><span class="field-error" data-err="issuedAt" hidden></span></div><div class="form-field"><label for="expiresAt">Data/hora de validade — opcional</label><input id="expiresAt" type="datetime-local" value="" /></div></div><div class="form-field"><label for="status">Status</label><select id="status"><option value="ativo" selected>Ativo</option><option value="encerrado">Encerrado</option></select></div><div class="form-actions"><button type="button" class="button button--ghost" data-close>Cancelar</button><button type="submit" class="button button--primary" id="alert-submit">Publicar alerta</button></div></form></div>
+      <div class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="alert-dialog-title"
+        style="max-width:620px">
+        <div class="dialog-panel__header">
+          <h2 id="alert-dialog-title">Criar novo alerta</h2>
+
+          <button type="button" class="icon-button" data-close aria-label="Fechar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              focusable="false">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="dialog-panel__body">
+          <form class="alert-form" id="alert-form" novalidate>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="municipality">Município</label>
+
+                <select id="municipality">
+                  <option value="Três Coroas" selected>
+                    Três Coroas
+                  </option>
+                  <option value="Igrejinha">Igrejinha</option>
+                  <option value="Taquara">Taquara</option>
+                  <option value="Gramado">Gramado</option>
+                  <option value="Canela">Canela</option>
+                </select>
+
+                <span class="field-error" data-err="municipality" hidden></span>
+              </div>
+
+              <div class="form-field">
+                <label for="level">Nível do alerta</label>
+
+                <select id="level">
+                  <option value="normal" selected>Normal</option>
+                  <option value="atencao">Atenção</option>
+                  <option value="critico">Alerta crítico</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="title">Título</label>
+
+              <input id="title" type="text" value="" placeholder="Ex.: Elevação do nível do Rio Paranhana" />
+
+              <span class="field-error" data-err="title" hidden></span>
+            </div>
+
+            <div class="form-field">
+              <label for="message">Mensagem</label>
+
+              <textarea id="message" rows="4"
+                placeholder="Descreva a situação monitorada e as recomendações relevantes."></textarea>
+
+              <span class="field-error" data-err="message" hidden></span>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="riverLevel">
+                  Nível do rio (m) — opcional
+                </label>
+
+                <input id="riverLevel" type="number" step="0.01" min="0" value="" />
+              </div>
+
+              <div class="form-field">
+                <label for="rainfall">
+                  Precipitação acumulada (mm) — opcional
+                </label>
+
+                <input id="rainfall" type="number" step="0.1" min="0" value="" />
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="issuedAt">Data/hora de emissão</label>
+
+                <input id="issuedAt" type="datetime-local" value="2026-09-29T19:40" />
+
+                <span class="field-error" data-err="issuedAt" hidden></span>
+              </div>
+
+              <div class="form-field">
+                <label for="expiresAt">
+                  Data/hora de validade — opcional
+                </label>
+
+                <input id="expiresAt" type="datetime-local" value="" />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="status">Status</label>
+
+              <select id="status">
+                <option value="ativo" selected>Ativo</option>
+                <option value="encerrado">Encerrado</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="button button--ghost" data-close>
+                Cancelar
+              </button>
+
+              <button type="submit" class="button button--primary" id="alert-submit">
+                Publicar alerta
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+
     <div class="dialog-overlay" id="confirm-dialog" hidden>
-      <div class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title" style="max-width:420px">
-        <div class="dialog-panel__header"><h2 id="confirm-dialog-title">Excluir alerta</h2><button type="button" class="icon-button" data-close aria-label="Fechar"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
-        <div class="dialog-panel__body"><div class="confirm-dialog"><div class="confirm-dialog__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><p id="confirm-text"></p>
-        <div class="form-actions"><button type="button" class="button button--ghost" id="confirm-cancel">Cancelar</button><button type="button" class="button button--danger" id="confirm-ok">Excluir</button></div></div></div>
+      <div class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title"
+        style="max-width:420px">
+        <div class="dialog-panel__header">
+          <h2 id="confirm-dialog-title">Excluir alerta</h2>
+
+          <button type="button" class="icon-button" data-close aria-label="Fechar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              focusable="false">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="dialog-panel__body">
+          <div class="confirm-dialog">
+            <div class="confirm-dialog__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                focusable="false">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                <path d="M12 9v4" />
+                <path d="M12 17h.01" />
+              </svg>
+            </div>
+
+            <p id="confirm-text"></p>
+
+            <div class="form-actions">
+              <button type="button" class="button button--ghost" id="confirm-cancel">
+                Cancelar
+              </button>
+
+              <button type="button" class="button button--danger" id="confirm-ok">
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-    <div class="toast-stack" id="toast-stack" role="status" aria-live="polite"></div>
-    <script src="js/icons.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/admin.js"></script>
-  </body>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" role="status" aria-live="polite"></div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+
 </html>
