@@ -1,93 +1,828 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="PrevêAÍ — protótipo de monitoramento hidrometeorológico e alertas de inundação para Três Coroas/RS." />
-    <title>Monitoramento — PrevêAÍ</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/components.css" />
-  </head>
-  <body>
-    <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
-    <div class="app-shell">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description"
+    content="PrevêAÍ — protótipo de monitoramento hidrometeorológico e alertas de inundação para Três Coroas/RS." />
+  <title>Monitoramento — PrevêAÍ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+
+<body>
+  <a href="#conteudo-principal" class="skip-link">
+    Pular para o conteúdo principal
+  </a>
+
+  <div class="app-shell">
     <header class="site-header">
       <div class="container site-header__inner">
-        <a href="index.html" class="brand" aria-label="PrevêAÍ — página inicial"><span class="brand__mark" aria-hidden="true"><img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" /></span><span class="brand__name">PrevêAÍ</span></a>
+        <a href="index.html" class="brand" aria-label="PrevêAÍ — página inicial">
+          <span class="brand__mark" aria-hidden="true">
+            <img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" />
+          </span>
+          <span class="brand__name">PrevêAÍ</span>
+        </a>
+
         <nav class="site-nav" aria-label="Navegação principal">
           <a href="index.html" class="site-nav__link">Início</a>
           <a href="projeto.html" class="site-nav__link">Projeto</a>
           <a href="monitoramento.html" class="site-nav__link is-active">Monitoramento</a>
           <a href="como-funciona.html" class="site-nav__link">Como funciona</a>
         </nav>
+
         <div class="site-header__actions">
-          <button type="button" class="icon-button" data-action="toggle-theme" aria-label="Ativar tema escuro"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+          <button type="button" class="icon-button" data-action="toggle-theme" aria-label="Ativar tema escuro">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              focusable="false">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          </button>
+
           <div class="admin-quick" data-admin-session hidden>
-            <a href="admin.html" class="button button--ghost button--sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Painel</a>
-            <button type="button" class="icon-button" data-action="logout" aria-label="Encerrar sessão de administrador"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></button>
+            <a href="admin.html" class="button button--ghost button--sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                focusable="false">
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              Painel
+            </a>
+
+            <button type="button" class="icon-button" data-action="logout"
+              aria-label="Encerrar sessão de administrador">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                focusable="false">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" x2="9" y1="12" y2="12" />
+              </svg>
+            </button>
           </div>
-          <a href="login.html" class="button button--primary button--sm" data-admin-login>Área administrativa</a>
+
+          <a href="login.html" class="button button--primary button--sm" data-admin-login>
+            Área administrativa
+          </a>
         </div>
       </div>
     </header>
-      <main id="conteudo-principal" class="app-main">
-<div class="page-monitoring">
-<section class="section page-hero" id="search-section"><div class="container">
-<div class="section-heading"><p class="section-heading__eyebrow">Painel</p><h2>Monitoramento hidrometeorológico</h2><p class="section-heading__desc">Consulte informações ambientais e condições de monitoramento por município.</p></div>
-<div class="municipality-search" id="msearch"><label for="municipality-search-input" class="visually-hidden">Pesquisar município</label>
-<div class="municipality-search__field"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="municipality-search-input" type="text" role="combobox" aria-expanded="false" aria-controls="msearch-list" aria-autocomplete="list" autocomplete="off" placeholder="Pesquisar município…" value="" /></div>
-<ul id="msearch-list" role="listbox" class="municipality-search__list" hidden></ul></div></div></section>
 
-<section class="section" style="padding-top:0"><div class="container">
-<div class="municipality-header"><div><h2 id="mun-title">Três Coroas/RS</h2><p class="municipality-header__meta" id="mun-updated">Última atualização: 27/09/2026, 08:40</p></div><span class="demo-badge"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>Dados demonstrativos</span></div>
-<div class="status-card"><span class="status-card__label">Situação atual</span><span id="status-badge"><span class="risk-badge risk-badge--atencao risk-badge--lg" role="status"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Atenção</span></span></span><p class="status-card__desc" id="status-desc">Indicadores acima do padrão habitual. Recomenda-se acompanhar a evolução das condições.</p></div>
-<div class="stat-grid">
-<div class="stat-card"><div class="stat-card__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg></div><div class="stat-card__body"><span class="stat-card__label">Precipitação acumulada</span><span class="stat-card__value"><span data-stat="rain">42,5</span><span class="stat-card__unit"> mm</span></span></div></div>
-<div class="stat-card"><div class="stat-card__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></div><div class="stat-card__body"><span class="stat-card__label">Nível do rio</span><span class="stat-card__value"><span data-stat="river">2,34</span><span class="stat-card__unit"> m</span></span></div></div>
-<div class="stat-card" id="stat-change-card"><div class="stat-card__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="stat-card__body"><span class="stat-card__label">Variação do nível</span><span class="stat-card__value"><span data-stat="change">+0,18</span><span class="stat-card__unit"> m</span></span></div></div>
-<div class="stat-card"><div class="stat-card__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg></div><div class="stat-card__body"><span class="stat-card__label">Temperatura</span><span class="stat-card__value"><span data-stat="temp">21,4</span><span class="stat-card__unit"> °C</span></span></div></div>
-<div class="stat-card"><div class="stat-card__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg></div><div class="stat-card__body"><span class="stat-card__label">Umidade</span><span class="stat-card__value"><span data-stat="hum">78</span><span class="stat-card__unit"> %</span></span></div></div>
-</div>
-<div class="chart-grid">
-<div class="chart-card"><div class="chart-card__header"><h3>Precipitação nas últimas 24 horas</h3><span class="demo-badge"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>Dados demonstrativos</span></div><div id="chart-rain"></div></div>
-<div class="chart-card"><div class="chart-card__header"><h3>Nível do Rio Paranhana</h3><span class="demo-badge"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>Dados demonstrativos</span></div><div id="chart-river"></div></div>
-</div>
-<div class="regional-map"><div class="regional-map__header"><h3>Visualização regional demonstrativa</h3><span class="demo-badge"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>Representação simplificada</span></div>
-<p class="regional-map__caption">Diagrama ilustrativo da bacia do Rio Paranhana e municípios monitorados. As posições são aproximadas e não representam coordenadas geográficas precisas.</p>
-<svg viewBox="0 0 480 320" role="img" aria-label="Mapa regional simplificado com marcadores dos municípios monitorados e seus níveis de alerta" class="regional-map__svg"><path d="M 60 280 C 140 260, 160 220, 220 200 C 260 185, 300 150, 340 70 C 360 40, 390 60, 400 100" fill="none" stroke="var(--color-brand-400)" stroke-width="10" stroke-linecap="round" opacity="0.35"/><path d="M 60 280 C 140 260, 160 220, 220 200 C 260 185, 300 150, 340 70 C 360 40, 390 60, 400 100" fill="none" stroke="var(--color-brand-500)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 10" opacity="0.7"/><g transform="translate(220, 200)" class="regional-map__marker-group" tabindex="0" role="button" data-map-id="tres-coroas" aria-label="Três Coroas, nível atenção"><circle class="map-halo" r="16" fill="var(--color-risk-atencao)" opacity="0.18" display="inline"/><circle class="map-dot" r="10" fill="var(--color-risk-atencao)" stroke="var(--color-surface)" stroke-width="2.5"/><text y="-16" text-anchor="middle" class="regional-map__label">Três Coroas</text></g><g transform="translate(300, 150)" class="regional-map__marker-group" tabindex="0" role="button" data-map-id="igrejinha" aria-label="Igrejinha, nível atenção"><circle class="map-halo" r="16" fill="var(--color-risk-atencao)" opacity="0.18" display="none"/><circle class="map-dot" r="8" fill="var(--color-risk-atencao)" stroke="var(--color-surface)" stroke-width="2.5"/><text y="-16" text-anchor="middle" class="regional-map__label">Igrejinha</text></g><g transform="translate(130, 260)" class="regional-map__marker-group" tabindex="0" role="button" data-map-id="taquara" aria-label="Taquara, nível normal"><circle class="map-halo" r="16" fill="var(--color-risk-normal)" opacity="0.18" display="none"/><circle class="map-dot" r="8" fill="var(--color-risk-normal)" stroke="var(--color-surface)" stroke-width="2.5"/><text y="-16" text-anchor="middle" class="regional-map__label">Taquara</text></g><g transform="translate(340, 70)" class="regional-map__marker-group" tabindex="0" role="button" data-map-id="gramado" aria-label="Gramado, nível normal"><circle class="map-halo" r="16" fill="var(--color-risk-normal)" opacity="0.18" display="none"/><circle class="map-dot" r="8" fill="var(--color-risk-normal)" stroke="var(--color-surface)" stroke-width="2.5"/><text y="-16" text-anchor="middle" class="regional-map__label">Gramado</text></g><g transform="translate(400, 100)" class="regional-map__marker-group" tabindex="0" role="button" data-map-id="canela" aria-label="Canela, nível normal"><circle class="map-halo" r="16" fill="var(--color-risk-normal)" opacity="0.18" display="none"/><circle class="map-dot" r="8" fill="var(--color-risk-normal)" stroke="var(--color-surface)" stroke-width="2.5"/><text y="-16" text-anchor="middle" class="regional-map__label">Canela</text></g></svg>
-<ul class="regional-map__legend"><li><span class="legend-dot" style="background:var(--color-risk-normal)"></span> Normal</li><li><span class="legend-dot" style="background:var(--color-risk-atencao)"></span> Atenção</li><li><span class="legend-dot" style="background:var(--color-risk-critico)"></span> Alerta crítico</li></ul></div>
-</div></section>
+    <main id="conteudo-principal" class="app-main">
+      <div class="page-monitoring">
 
-<section class="section section--alt"><div class="container">
-<div class="section-heading"><p class="section-heading__eyebrow">Comunicação</p><h2>Alertas recentes</h2></div>
-<div class="alert-filters"><span class="alert-filters__label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Filtrar por:</span>
-<div class="form-field form-field--inline"><label for="filter-municipio" class="visually-hidden">Município</label><select id="filter-municipio"><option value="todos">Todos os municípios</option><option value="Três Coroas">Três Coroas</option><option value="Igrejinha">Igrejinha</option><option value="Taquara">Taquara</option><option value="Gramado">Gramado</option><option value="Canela">Canela</option></select></div>
-<div class="form-field form-field--inline"><label for="filter-nivel" class="visually-hidden">Nível</label><select id="filter-nivel"><option value="todos">Todos os níveis</option><option value="normal">Normal</option><option value="atencao">Atenção</option><option value="critico">Alerta crítico</option></select></div></div>
-<p class="empty-state" id="alert-empty" hidden>Nenhum alerta encontrado para os filtros selecionados.</p>
-<div class="alert-grid" id="alert-grid"><article class="alert-card alert-card--critico"><div class="alert-card__top"><span class="risk-badge risk-badge--critico risk-badge--md" role="status"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg><span>Alerta crítico</span></span><span class="status-pill status-pill--ativo">Ativo</span></div><h3 class="alert-card__title">Elevação do nível do Rio Paranhana</h3><p class="alert-card__location"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Três Coroas</p><p class="alert-card__message">Monitoramento indica elevação contínua do nível do rio nas últimas horas, associada a chuva acumulada acima da média. Recomenda-se atenção redobrada em áreas historicamente afetadas por inundações.</p><div class="alert-card__meta"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg> 42,5 mm</span><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg> 2,34 m</span><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 27/09/2026, 07:15</span></div></article><article class="alert-card alert-card--atencao"><div class="alert-card__top"><span class="risk-badge risk-badge--atencao risk-badge--md" role="status"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Atenção</span></span><span class="status-pill status-pill--ativo">Ativo</span></div><h3 class="alert-card__title">Aumento gradual da precipitação acumulada</h3><p class="alert-card__location"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Igrejinha</p><p class="alert-card__message">Volume de chuva acumulado nas últimas 24 horas está acima do padrão esperado para o período. Situação será acompanhada nas próximas horas.</p><div class="alert-card__meta"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg> 37,2 mm</span><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg> 1,98 m</span><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 27/09/2026, 06:50</span></div></article><article class="alert-card alert-card--normal"><div class="alert-card__top"><span class="risk-badge risk-badge--normal risk-badge--md" role="status"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Normal</span></span><span class="status-pill status-pill--encerrado">Encerrado</span></div><h3 class="alert-card__title">Condições dentro da normalidade</h3><p class="alert-card__location"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Taquara</p><p class="alert-card__message">Indicadores hidrometeorológicos monitorados permanecem dentro da faixa considerada normal para a região.</p><div class="alert-card__meta"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg> 12,6 mm</span><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg> 1,41 m</span><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 26/09/2026, 20:00</span></div></article></div>
-</div></section>
-</div>
-      </main>
-<footer class="site-footer"><div class="container site-footer__inner"><div class="site-footer__brand"><span class="brand__mark" aria-hidden="true"><img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" /></span><div><strong>PrevêAÍ</strong><p>Protótipo de pesquisa acadêmica em monitoramento hidrometeorológico</p></div></div><div class="site-footer__cols"><div><h3>Projeto</h3><ul><li><a href="projeto.html">Sobre o projeto</a></li><li><a href="como-funciona.html">Como funciona</a></li><li><a href="monitoramento.html">Monitoramento</a></li></ul></div><div><h3>Região de estudo</h3><ul><li>Três Coroas/RS</li><li>Bacia do Rio Paranhana</li></ul></div><div><h3>Links</h3><ul><li><span class="footer-placeholder">Link do repositório (em breve)</span></li><li><span class="footer-placeholder">Publicação da pesquisa (em breve)</span></li></ul></div></div></div><div class="site-footer__bottom container"><p>© 2026 PrevêAÍ — projeto de pesquisa acadêmica sobre previsão de inundações. Todos os dados de monitoramento exibidos são demonstrativos.</p></div></footer>
+        <section class="section page-hero" id="search-section">
+          <div class="container">
+            <div class="section-heading">
+              <p class="section-heading__eyebrow">Painel</p>
+              <h2>Monitoramento hidrometeorológico</h2>
+              <p class="section-heading__desc">
+                Consulte informações ambientais e condições de monitoramento por município.
+              </p>
+            </div>
+
+            <div class="municipality-search" id="msearch">
+              <label for="municipality-search-input" class="visually-hidden">
+                Pesquisar município
+              </label>
+
+              <div class="municipality-search__field">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true" focusable="false">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+
+                <input id="municipality-search-input" type="text" role="combobox" aria-expanded="false"
+                  aria-controls="msearch-list" aria-autocomplete="list" autocomplete="off"
+                  placeholder="Pesquisar município…" value="" />
+              </div>
+
+              <ul id="msearch-list" role="listbox" class="municipality-search__list" hidden></ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" style="padding-top:0">
+          <div class="container">
+
+            <div class="municipality-header">
+              <div>
+                <h2 id="mun-title">Três Coroas/RS</h2>
+                <p class="municipality-header__meta" id="mun-updated">
+                  Última atualização: 27/09/2026, 08:40
+                </p>
+              </div>
+
+              <span class="demo-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true" focusable="false">
+                  <path
+                    d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
+                  <path d="M8.5 2h7" />
+                  <path d="M7 16h10" />
+                </svg>
+                Dados demonstrativos
+              </span>
+            </div>
+
+            <div class="status-card">
+              <span class="status-card__label">Situação atual</span>
+
+              <span id="status-badge">
+                <span class="risk-badge risk-badge--atencao risk-badge--lg" role="status">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                    <path d="M12 9v4" />
+                    <path d="M12 17h.01" />
+                  </svg>
+                  <span>Atenção</span>
+                </span>
+              </span>
+
+              <p class="status-card__desc" id="status-desc">
+                Indicadores acima do padrão habitual. Recomenda-se acompanhar a evolução das condições.
+              </p>
+            </div>
+
+            <div class="stat-grid">
+
+              <div class="stat-card">
+                <div class="stat-card__icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+                    <path d="M16 14v6" />
+                    <path d="M8 14v6" />
+                    <path d="M12 16v6" />
+                  </svg>
+                </div>
+
+                <div class="stat-card__body">
+                  <span class="stat-card__label">Precipitação acumulada</span>
+                  <span class="stat-card__value">
+                    <span data-stat="rain">42,5</span>
+                    <span class="stat-card__unit">mm</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-card__icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                    <path
+                      d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                    <path
+                      d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                  </svg>
+                </div>
+
+                <div class="stat-card__body">
+                  <span class="stat-card__label">Nível do rio</span>
+                  <span class="stat-card__value">
+                    <span data-stat="river">2,34</span>
+                    <span class="stat-card__unit">m</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="stat-card" id="stat-change-card">
+                <div class="stat-card__icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                    <polyline points="16 7 22 7 22 13" />
+                  </svg>
+                </div>
+
+                <div class="stat-card__body">
+                  <span class="stat-card__label">Variação do nível</span>
+                  <span class="stat-card__value">
+                    <span data-stat="change">+0,18</span>
+                    <span class="stat-card__unit">m</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-card__icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
+                  </svg>
+                </div>
+
+                <div class="stat-card__body">
+                  <span class="stat-card__label">Temperatura</span>
+                  <span class="stat-card__value">
+                    <span data-stat="temp">21,4</span>
+                    <span class="stat-card__unit">°C</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-card__icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path
+                      d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+                    <path
+                      d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
+                  </svg>
+                </div>
+
+                <div class="stat-card__body">
+                  <span class="stat-card__label">Umidade</span>
+                  <span class="stat-card__value">
+                    <span data-stat="hum">78</span>
+                    <span class="stat-card__unit">%</span>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="chart-grid">
+
+              <div class="chart-card">
+                <div class="chart-card__header">
+                  <h3>Precipitação nas últimas 24 horas</h3>
+
+                  <span class="demo-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path
+                        d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
+                      <path d="M8.5 2h7" />
+                      <path d="M7 16h10" />
+                    </svg>
+                    Dados demonstrativos
+                  </span>
+                </div>
+
+                <div id="chart-rain"></div>
+              </div>
+
+              <div class="chart-card">
+                <div class="chart-card__header">
+                  <h3>Nível do Rio Paranhana</h3>
+
+                  <span class="demo-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path
+                        d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
+                      <path d="M8.5 2h7" />
+                      <path d="M7 16h10" />
+                    </svg>
+                    Dados demonstrativos
+                  </span>
+                </div>
+
+                <div id="chart-river"></div>
+              </div>
+
+            </div>
+
+            <div class="regional-map">
+              <div class="regional-map__header">
+                <h3>Visualização regional demonstrativa</h3>
+
+                <span class="demo-badge">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path
+                      d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
+                    <path d="M8.5 2h7" />
+                    <path d="M7 16h10" />
+                  </svg>
+                  Representação simplificada
+                </span>
+              </div>
+
+              <p class="regional-map__caption">
+                Diagrama ilustrativo da bacia do Rio Paranhana e municípios monitorados.
+                As posições são aproximadas e não representam coordenadas geográficas precisas.
+              </p>
+
+              <svg viewBox="0 0 480 320" role="img"
+                aria-label="Mapa regional simplificado com marcadores dos municípios monitorados e seus níveis de alerta"
+                class="regional-map__svg">
+                <path d="M 60 280 C 140 260, 160 220, 220 200 C 260 185, 300 150, 340 70 C 360 40, 390 60, 400 100"
+                  fill="none" stroke="var(--color-brand-400)" stroke-width="10" stroke-linecap="round" opacity="0.35" />
+
+                <path d="M 60 280 C 140 260, 160 220, 220 200 C 260 185, 300 150, 340 70 C 360 40, 390 60, 400 100"
+                  fill="none" stroke="var(--color-brand-500)" stroke-width="3" stroke-linecap="round"
+                  stroke-dasharray="1 10" opacity="0.7" />
+
+                <g transform="translate(220, 200)" class="regional-map__marker-group" tabindex="0" role="button"
+                  data-map-id="tres-coroas" aria-label="Três Coroas, nível atenção">
+                  <circle class="map-halo" r="16" fill="var(--color-risk-atencao)" opacity="0.18" display="inline" />
+                  <circle class="map-dot" r="10" fill="var(--color-risk-atencao)" stroke="var(--color-surface)"
+                    stroke-width="2.5" />
+                  <text y="-16" text-anchor="middle" class="regional-map__label">
+                    Três Coroas
+                  </text>
+                </g>
+
+                <g transform="translate(300, 150)" class="regional-map__marker-group" tabindex="0" role="button"
+                  data-map-id="igrejinha" aria-label="Igrejinha, nível atenção">
+                  <circle class="map-halo" r="16" fill="var(--color-risk-atencao)" opacity="0.18" display="none" />
+                  <circle class="map-dot" r="8" fill="var(--color-risk-atencao)" stroke="var(--color-surface)"
+                    stroke-width="2.5" />
+                  <text y="-16" text-anchor="middle" class="regional-map__label">
+                    Igrejinha
+                  </text>
+                </g>
+
+                <g transform="translate(130, 260)" class="regional-map__marker-group" tabindex="0" role="button"
+                  data-map-id="taquara" aria-label="Taquara, nível normal">
+                  <circle class="map-halo" r="16" fill="var(--color-risk-normal)" opacity="0.18" display="none" />
+                  <circle class="map-dot" r="8" fill="var(--color-risk-normal)" stroke="var(--color-surface)"
+                    stroke-width="2.5" />
+                  <text y="-16" text-anchor="middle" class="regional-map__label">
+                    Taquara
+                  </text>
+                </g>
+
+                <g transform="translate(340, 70)" class="regional-map__marker-group" tabindex="0" role="button"
+                  data-map-id="gramado" aria-label="Gramado, nível normal">
+                  <circle class="map-halo" r="16" fill="var(--color-risk-normal)" opacity="0.18" display="none" />
+                  <circle class="map-dot" r="8" fill="var(--color-risk-normal)" stroke="var(--color-surface)"
+                    stroke-width="2.5" />
+                  <text y="-16" text-anchor="middle" class="regional-map__label">
+                    Gramado
+                  </text>
+                </g>
+
+                <g transform="translate(400, 100)" class="regional-map__marker-group" tabindex="0" role="button"
+                  data-map-id="canela" aria-label="Canela, nível normal">
+                  <circle class="map-halo" r="16" fill="var(--color-risk-normal)" opacity="0.18" display="none" />
+                  <circle class="map-dot" r="8" fill="var(--color-risk-normal)" stroke="var(--color-surface)"
+                    stroke-width="2.5" />
+                  <text y="-16" text-anchor="middle" class="regional-map__label">
+                    Canela
+                  </text>
+                </g>
+              </svg>
+
+              <ul class="regional-map__legend">
+                <li>
+                  <span class="legend-dot" style="background:var(--color-risk-normal)"></span>
+                  Normal
+                </li>
+                <li>
+                  <span class="legend-dot" style="background:var(--color-risk-atencao)"></span>
+                  Atenção
+                </li>
+                <li>
+                  <span class="legend-dot" style="background:var(--color-risk-critico)"></span>
+                  Alerta crítico
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="section section--alt">
+          <div class="container">
+
+            <div class="section-heading">
+              <p class="section-heading__eyebrow">Comunicação</p>
+              <h2>Alertas recentes</h2>
+            </div>
+
+            <div class="alert-filters">
+              <span class="alert-filters__label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true" focusable="false">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+                Filtrar por:
+              </span>
+
+              <div class="form-field form-field--inline">
+                <label for="filter-municipio" class="visually-hidden">
+                  Município
+                </label>
+
+                <select id="filter-municipio">
+                  <option value="todos">Todos os municípios</option>
+                  <option value="Três Coroas">Três Coroas</option>
+                  <option value="Igrejinha">Igrejinha</option>
+                  <option value="Taquara">Taquara</option>
+                  <option value="Gramado">Gramado</option>
+                  <option value="Canela">Canela</option>
+                </select>
+              </div>
+
+              <div class="form-field form-field--inline">
+                <label for="filter-nivel" class="visually-hidden">
+                  Nível
+                </label>
+
+                <select id="filter-nivel">
+                  <option value="todos">Todos os níveis</option>
+                  <option value="normal">Normal</option>
+                  <option value="atencao">Atenção</option>
+                  <option value="critico">Alerta crítico</option>
+                </select>
+              </div>
+            </div>
+
+            <p class="empty-state" id="alert-empty" hidden>
+              Nenhum alerta encontrado para os filtros selecionados.
+            </p>
+
+            <div class="alert-grid" id="alert-grid">
+
+              <article class="alert-card alert-card--critico">
+                <div class="alert-card__top">
+                  <span class="risk-badge risk-badge--critico risk-badge--md" role="status">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path d="M12 16h.01" />
+                      <path d="M12 8v4" />
+                      <path
+                        d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z" />
+                    </svg>
+                    <span>Alerta crítico</span>
+                  </span>
+
+                  <span class="status-pill status-pill--ativo">Ativo</span>
+                </div>
+
+                <h3 class="alert-card__title">
+                  Elevação do nível do Rio Paranhana
+                </h3>
+
+                <p class="alert-card__location">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Três Coroas
+                </p>
+
+                <p class="alert-card__message">
+                  Monitoramento indica elevação contínua do nível do rio nas últimas horas,
+                  associada a chuva acumulada acima da média. Recomenda-se atenção redobrada
+                  em áreas historicamente afetadas por inundações.
+                </p>
+
+                <div class="alert-card__meta">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path
+                        d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+                      <path
+                        d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
+                    </svg>
+                    42,5 mm
+                  </span>
+
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                      <path
+                        d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                      <path
+                        d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                    </svg>
+                    2,34 m
+                  </span>
+
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    27/09/2026, 07:15
+                  </span>
+                </div>
+              </article>
+
+              <article class="alert-card alert-card--atencao">
+                <div class="alert-card__top">
+                  <span class="risk-badge risk-badge--atencao risk-badge--md" role="status">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                      <path d="M12 9v4" />
+                      <path d="M12 17h.01" />
+                    </svg>
+                    <span>Atenção</span>
+                  </span>
+
+                  <span class="status-pill status-pill--ativo">Ativo</span>
+                </div>
+
+                <h3 class="alert-card__title">
+                  Aumento gradual da precipitação acumulada
+                </h3>
+
+                <p class="alert-card__location">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Igrejinha
+                </p>
+
+                <p class="alert-card__message">
+                  Volume de chuva acumulado nas últimas 24 horas está acima do padrão
+                  esperado para o período. Situação será acompanhada nas próximas horas.
+                </p>
+
+                <div class="alert-card__meta">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path
+                        d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+                      <path
+                        d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
+                    </svg>
+                    37,2 mm
+                  </span>
+
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                      <path
+                        d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                      <path
+                        d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                    </svg>
+                    1,98 m
+                  </span>
+
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    27/09/2026, 06:50
+                  </span>
+                </div>
+              </article>
+
+              <article class="alert-card alert-card--normal">
+                <div class="alert-card__top">
+                  <span class="risk-badge risk-badge--normal risk-badge--md" role="status">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m9 12 2 2 4-4" />
+                    </svg>
+                    <span>Normal</span>
+                  </span>
+
+                  <span class="status-pill status-pill--encerrado">
+                    Encerrado
+                  </span>
+                </div>
+
+                <h3 class="alert-card__title">
+                  Condições dentro da normalidade
+                </h3>
+
+                <p class="alert-card__location">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Taquara
+                </p>
+
+                <p class="alert-card__message">
+                  Indicadores hidrometeorológicos monitorados permanecem dentro da
+                  faixa considerada normal para a região.
+                </p>
+
+                <div class="alert-card__meta">
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path
+                        d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+                      <path
+                        d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
+                    </svg>
+                    12,6 mm
+                  </span>
+
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                      <path
+                        d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                      <path
+                        d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                    </svg>
+                    1,41 m
+                  </span>
+
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    26/09/2026, 20:00
+                  </span>
+                </div>
+              </article>
+
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+
+        <div class="site-footer__brand">
+          <span class="brand__mark" aria-hidden="true">
+            <img src="assets/img/logo-preveai.png" alt="" width="40" height="40" decoding="async" />
+          </span>
+
+          <div>
+            <strong>PrevêAÍ</strong>
+            <p>Protótipo de pesquisa acadêmica em monitoramento hidrometeorológico</p>
+          </div>
+        </div>
+
+        <div class="site-footer__cols">
+
+          <div>
+            <h3>Projeto</h3>
+            <ul>
+              <li><a href="projeto.html">Sobre o projeto</a></li>
+              <li><a href="como-funciona.html">Como funciona</a></li>
+              <li><a href="monitoramento.html">Monitoramento</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Região de estudo</h3>
+            <ul>
+              <li>Três Coroas/RS</li>
+              <li>Bacia do Rio Paranhana</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Links</h3>
+            <ul>
+              <li>
+                <span class="footer-placeholder">
+                  Link do repositório (em breve)
+                </span>
+              </li>
+              <li>
+                <span class="footer-placeholder">
+                  Publicação da pesquisa (em breve)
+                </span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="site-footer__bottom container">
+        <p>
+          © 2026 PrevêAÍ — projeto de pesquisa acadêmica sobre previsão de inundações.
+          Todos os dados de monitoramento exibidos são demonstrativos.
+        </p>
+      </div>
+    </footer>
+
     <nav class="bottom-nav" aria-label="Navegação principal (móvel)">
-      <a href="index.html" class="bottom-nav__item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span></a>
-      <a href="projeto.html" class="bottom-nav__item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Projeto</span></a>
-      <a href="monitoramento.html" class="bottom-nav__item is-active"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg><span>Monitorar</span></a>
-      <a href="como-funciona.html" class="bottom-nav__item"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>Funciona</span></a>
-      <a href="login.html" class="bottom-nav__item" data-admin-nav><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span>Admin</span></a>
-    </nav>
 
-    </div>
-    <div class="toast-stack" id="toast-stack" role="status" aria-live="polite"></div>
-    <script src="js/icons.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/monitoramento.js"></script>
-  </body>
+      <a href="index.html" class="bottom-nav__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span>Início</span>
+      </a>
+
+      <a href="projeto.html" class="bottom-nav__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+          <path d="M10 9H8" />
+          <path d="M16 13H8" />
+          <path d="M16 17H8" />
+        </svg>
+        <span>Projeto</span>
+      </a>
+
+      <a href="monitoramento.html" class="bottom-nav__item is-active">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path
+            d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+        </svg>
+        <span>Monitorar</span>
+      </a>
+
+      <a href="como-funciona.html" class="bottom-nav__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <path d="M12 17h.01" />
+        </svg>
+        <span>Funciona</span>
+      </a>
+
+      <a href="login.html" class="bottom-nav__item" data-admin-nav>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          focusable="false">
+          <path
+            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        <span>Admin</span>
+      </a>
+
+    </nav>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" role="status" aria-live="polite"></div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/monitoramento.js"></script>
+</body>
+
 </html>
