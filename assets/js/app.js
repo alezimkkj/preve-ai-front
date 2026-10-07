@@ -2,7 +2,7 @@
   'use strict';
 
   /* ---------- Utilidades ---------- */
-  var KEYS = { alerts: 'preveai_alerts', theme: 'preveai_theme', municipality: 'preveai_selected_municipality', session: 'preveai_admin_session' };
+  var KEYS = { alerts: 'preveai_alerts_v2', theme: 'preveai_theme', municipality: 'preveai_selected_municipality', session: 'preveai_admin_session' };
   var levelLabels = { normal: 'Normal', atencao: 'Atenção', critico: 'Alerta crítico' };
   var statusLabels = { ativo: 'Ativo', encerrado: 'Encerrado' };
 
@@ -13,7 +13,7 @@
   }
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
-  function num(n) { return Number(n).toLocaleString('pt-BR'); }
+  function num(n) { return n == null ? '—' : Number(n).toLocaleString('pt-BR'); }
   function ic(name, size) { return window.icon(name, size); }
 
   function sGet(st, k) { try { return st.getItem(k); } catch (e) { return null; } }
@@ -47,13 +47,16 @@
   function clearSession() { sDel(sessionStorage, KEYS.session); }
 
   function loadAlerts() {
+    // Alertas automaticos (id "auto-...") vem sempre dos dados reais; os criados no painel ficam salvos.
+    var stored = [];
     var raw = sGet(localStorage, KEYS.alerts);
     if (raw) {
-      try { var p = JSON.parse(raw); if (Array.isArray(p)) return p; } catch (e) { /* fallthrough */ }
+      try { var p = JSON.parse(raw); if (Array.isArray(p)) stored = p; } catch (e) { /* ignora */ }
     }
-    var seed = (window.seedAlerts || []).slice();
-    sSet(localStorage, KEYS.alerts, JSON.stringify(seed));
-    return seed;
+    var manual = stored.filter(function (a) { return String(a.id).indexOf('auto-') !== 0; });
+    var list = (window.seedAlerts || []).slice().concat(manual);
+    sSet(localStorage, KEYS.alerts, JSON.stringify(list));
+    return list;
   }
   function saveAlerts(list) { sSet(localStorage, KEYS.alerts, JSON.stringify(list)); }
 
