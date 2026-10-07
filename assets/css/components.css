@@ -908,10 +908,23 @@ section.section.page-hero#search-section, section.section.page-hero#section-func
 }
 
 .chart-card {
+  min-width: 0;
   background: var(--color-surface);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   padding: 20px;
+}
+
+#chart-rain,
+#chart-river {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#chart-rain svg,
+#chart-river svg {
+  max-width: 100%;
 }
 
 .chart-card__header {
@@ -1571,4 +1584,10 @@ section.section.page-hero#search-section, section.section.page-hero#section-func
 
 .not-found p {
   max-width: 46ch;
+}
+
+/* Permite que itens de grid/flex encolham junto com a janela */
+.chart-grid > *,
+.stat-grid > * {
+  min-width: 0;
 }
