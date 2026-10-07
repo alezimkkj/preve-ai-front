@@ -63,7 +63,7 @@
     var n = cfg.data.length;
     var band = pw / n;
     var xS = function (i) { return cfg.type === 'bar' ? M.left + band * i + band / 2 : M.left + (pw * i) / (n - 1); };
-    var s = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true" style="display:block">';
+    var s = '<svg width="100%" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true" style="display:block;max-width:100%">';
     if (cfg.type === 'area') {
       s += '<defs><linearGradient id="' + cfg.gradId + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--color-brand-500)" stop-opacity="0.35"/><stop offset="100%" stop-color="var(--color-brand-500)" stop-opacity="0.02"/></linearGradient></defs>';
     }
@@ -132,10 +132,28 @@
     }
   }
   var resizeTimer;
-  window.addEventListener('resize', function () {
+  function scheduleRedraw() {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(drawCharts, 120);
-  });
+    resizeTimer = setTimeout(drawCharts, 100);
+  }
+  window.addEventListener('resize', scheduleRedraw);
+  window.addEventListener('orientationchange', scheduleRedraw);
+  // Observa o próprio container: redesenha quando a largura dele muda (inclusive ao emular dispositivos)
+  if ('ResizeObserver' in window) {
+    var lastW = {};
+    var ro = new ResizeObserver(function (entries) {
+      var changed = false;
+      entries.forEach(function (en) {
+        var w = Math.round(en.contentRect.width);
+        if (lastW[en.target.id] !== w) { lastW[en.target.id] = w; changed = true; }
+      });
+      if (changed) scheduleRedraw();
+    });
+    ['chart-rain', 'chart-river'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) ro.observe(el);
+    });
+  }
 
   /* ---------- Município selecionado ---------- */
   var descs = {
