@@ -29,6 +29,7 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+<<<<<<< HEAD
       - name: Restaurar historico do CEMADEN (cache)
         uses: actions/cache@v4
         with:
@@ -36,6 +37,8 @@ jobs:
           key: cemaden-hist-${{ github.run_id }}
           restore-keys: cemaden-hist-
 
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
       - name: Coletar dados (ANA + CEMADEN) e gerar assets/js/data.js
         env:
           ANA_USUARIO: ${{ secrets.ANA_USUARIO }}

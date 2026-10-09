@@ -17,8 +17,11 @@ import clientes as c  # noqa: E402
 RAIZ = Path(__file__).resolve().parent.parent
 CONFIG = RAIZ / "config" / "estacoes.json"
 SAIDA = RAIZ / "assets" / "js" / "data.js"
+<<<<<<< HEAD
 HISTORICO = RAIZ / ".cache" / "cemaden_historico.json"
 HORAS_HISTORICO = 36
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
 NIVEIS = {"normal": 0, "atencao": 1, "critico": 2}
 NOME_NIVEL = {v: k for k, v in NIVEIS.items()}
 
@@ -102,6 +105,7 @@ def classificar(cfg, chuva24, nivel, variacao):
     return NOME_NIVEL[n], motivos
 
 
+<<<<<<< HEAD
 def _ajustar_cota(cfg, regs):
     """A 'cota' da ANA pode ser a leitura da regua (poucos metros) ou uma altitude (dezenas de metros).
     Se parecer altitude (ou se config pedir 'relativo'), mostra o nivel acima do MENOR valor dos dados
@@ -116,6 +120,8 @@ def _ajustar_cota(cfg, regs):
     return regs, False
 
 
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
 def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
     """cem_regs: lista (por estacao) de registros CEMADEN; ana_regs: idem ANA."""
     passo = cfg["passo_horas"]
@@ -123,6 +129,7 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
     inst = _pontos_tempo(agora, n, passo)
     rotulos = [t.astimezone(c.BRT).strftime("%Hh") for t in inst]
 
+<<<<<<< HEAD
     # chuva: CEMADEN (mescla) quando ha ~24 h de historico; senao ANA; senao CEMADEN parcial
     def frescas(lista):
         return [rs for rs in lista if rs and max(r["t"] for r in rs) >= agora - timedelta(hours=6)]
@@ -141,6 +148,11 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
         fontes_chuva, fonte_chuva = cem_chuva, "CEMADEN"
     else:
         fontes_chuva, fonte_chuva = [], ""
+=======
+    # chuva: CEMADEN (mescla); ANA como reserva
+    fontes_chuva = cem_regs if any(r["chuva"] is not None for rs in cem_regs for r in rs) else \
+        [[{"t": r["t"], "chuva": r["chuva"]} for r in rs] for rs in ana_regs]
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
     chuva24 = chuva_total(fontes_chuva, agora, cfg["janela_horas"])
     sc = serie_chuva(fontes_chuva, inst, passo)
     rain_series = ([{"hour": h, "mm": round(v if v is not None else 0.0, 1)} for h, v in zip(rotulos, sc)]
@@ -150,11 +162,17 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
     ana_com_nivel = [rs for rs in ana_regs if any(r["nivel"] is not None for r in rs)]
     ana_com_nivel.sort(key=lambda rs: max(r["t"] for r in rs if r["nivel"] is not None), reverse=True)
     nivel_atual = variacao = None
+<<<<<<< HEAD
     relativo = False
     river_series = []
     if ana_com_nivel:
         regs = ana_com_nivel[0]
         regs, relativo = _ajustar_cota(cfg, regs)
+=======
+    river_series = []
+    if ana_com_nivel:
+        regs = ana_com_nivel[0]
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
         sn = preencher(serie_nivel(regs, inst))
         river_series = [{"hour": h, "m": round(v, 2)} for h, v in zip(rotulos, sn)]
         ult = [r for r in regs if r["nivel"] is not None][-1]
@@ -177,12 +195,19 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
     tem_dado = chuva24 is not None or nivel_atual is not None or temp is not None
     nivel_risco, motivos = classificar(cfg, chuva24, nivel_atual, variacao)
     fontes = []
+<<<<<<< HEAD
     if fonte_chuva:
         fontes.append(fonte_chuva)
     if any(r["nivel"] is not None for rs in ana_regs for r in rs) and "ANA" not in fontes:
         fontes.append("ANA")
     if (temp is not None or umid is not None) and "CEMADEN" not in fontes:
         fontes.append("CEMADEN")
+=======
+    if any(cem_regs):
+        fontes.append("CEMADEN")
+    if any(ana_regs):
+        fontes.append("ANA")
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
     return {
         "id": mun["id"], "name": mun["nome"], "state": "RS",
         "level": nivel_risco if tem_dado else "normal",
@@ -190,7 +215,10 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
         "motivos": motivos,
         "rainfall24h": None if chuva24 is None else round(chuva24, 1),
         "riverLevel": nivel_atual,
+<<<<<<< HEAD
         "riverRelativo": relativo,
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
         "riverLevelChange": variacao,
         "temperature": None if temp is None else round(temp, 1),
         "humidity": None if umid is None else round(umid),
@@ -262,6 +290,7 @@ def coletar(cfg, agora):
     return cem_cache, ana_cache, erros
 
 
+<<<<<<< HEAD
 def acumular_historico(cem_cache, agora):
     """A API do CEMADEN devolve so ~1-2 h por estacao. Guardamos as leituras entre execucoes
     (cache do GitHub Actions) para formar a janela de 24 h."""
@@ -286,6 +315,8 @@ def acumular_historico(cem_cache, agora):
     return novo
 
 
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
 def montar(cfg, cem_cache, ana_cache, agora):
     muns = []
     for m in cfg["municipios"]:
@@ -302,8 +333,11 @@ def main():
         cem, ana, erros = {}, {}, []
     else:
         cem, ana, erros = coletar(cfg, agora)
+<<<<<<< HEAD
         print(f"Token CEMADEN: {c.INFO['token']}")
         cem = acumular_historico(cem, agora)
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
     muns = montar(cfg, cem, ana, agora)
     meta = {"geradoEm": agora.astimezone(c.BRT).isoformat(), "fontes": ["ANA", "CEMADEN"],
             "municipiosComDados": sum(1 for m in muns if not m["semDados"])}

@@ -91,6 +91,7 @@ def _primeiro(d, chaves):
 
 
 # ------------------------------------------------------------------- CEMADEN
+<<<<<<< HEAD
 INFO = {"token": "nenhum"}
 
 
@@ -108,6 +109,8 @@ def _expira_em_h(token):
         return None
 
 
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
 def cemaden_token():
     """Token do CEMADEN. O token dura poucas horas, entao o ideal e gerar um novo
     a cada execucao com e-mail/senha (secrets CEMADEN_EMAIL e CEMADEN_SENHA).
@@ -116,6 +119,7 @@ def cemaden_token():
     erros = []
     if email and senha:
         tentativas = [
+<<<<<<< HEAD
             ("POST", "https://sgaa.cemaden.gov.br/SGAA/rest/controle-token/tokens", {"json": {"email": email, "password": senha}}),
             ("POST", "https://sgaa.cemaden.gov.br/SGAA/rest/controle-token/tokens", {"json": {"login": email, "password": senha}}),
             ("GET", f"{CEMADEN_BASE}/token", {"headers": {"email": email, "password": senha}}),
@@ -145,6 +149,30 @@ def cemaden_token():
         h = _expira_em_h(fixo)
         INFO["token"] = ("CEMADEN_TOKEN fixo" + ("" if h is None else (f" (expira em {h:.1f} h)" if h > 0 else " (JA EXPIRADO)"))
                          + " - login por e-mail/senha nao funcionou: " + ("; ".join(erros) or "sem secrets de e-mail/senha"))
+=======
+            ("GET", {"headers": {"email": email, "password": senha}}),
+            ("POST", {"json": {"email": email, "password": senha}}),
+        ]
+        for metodo, kw in tentativas:
+            try:
+                r = requests.request(metodo, f"{CEMADEN_BASE}/token", timeout=TIMEOUT, **kw)
+                if r.status_code != 200:
+                    erros.append(f"{metodo} /token -> HTTP {r.status_code}")
+                    continue
+                try:
+                    j = r.json()
+                    tok = j.get("token") if isinstance(j, dict) else None
+                except ValueError:
+                    tok = None
+                tok = tok or r.text.strip().strip('"')
+                if tok and len(tok) > 20:
+                    return tok
+                erros.append(f"{metodo} /token -> resposta sem token")
+            except requests.RequestException as e:
+                erros.append(f"{metodo} /token -> {type(e).__name__}")
+    fixo = os.environ.get("CEMADEN_TOKEN")
+    if fixo:
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
         return fixo
     raise RuntimeError("Sem token CEMADEN. Defina CEMADEN_EMAIL + CEMADEN_SENHA (ou CEMADEN_TOKEN). "
                        + "; ".join(erros))
@@ -187,11 +215,15 @@ def normalizar_cemaden(payload, fuso=UTC):
         if t is None:
             continue
         reg = {"t": t, "chuva": None, "temp": None, "umid": None}
+<<<<<<< HEAD
         if "id_sensor" in r and "valor" in r and "sensor" not in r:
             # Formato real da PED: um registro por sensor; id_sensor 10 = pluviometro (mm por leitura)
             if str(r["id_sensor"]).strip() == "10":
                 reg["chuva"] = para_float(r["valor"])
         elif "sensor" in r and "valor" in r:
+=======
+        if "sensor" in r and "valor" in r:
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
             s, v = sem_acento(r["sensor"]), para_float(r["valor"])
             if any(x in s for x in ("chuva", "precip", "pluv")):
                 reg["chuva"] = v
@@ -248,7 +280,11 @@ def normalizar_ana(payload, fuso=BRT, unidade="auto"):
             continue
         nivel = chuva = None
         for k, v in it.items():
+<<<<<<< HEAD
             if (k.startswith("nivel") or k.startswith("cota")) and nivel is None:
+=======
+            if k.startswith("nivel") and nivel is None:
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
                 nivel = para_float(v)
             elif k.startswith("chuva") and chuva is None:
                 chuva = para_float(v)

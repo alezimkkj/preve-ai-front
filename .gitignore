@@ -5,4 +5,7 @@ __pycache__/
 _site/
 relatorio/
 .venv/
+<<<<<<< HEAD
 .cache/
+=======
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296

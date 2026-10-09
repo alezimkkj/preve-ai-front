@@ -168,7 +168,11 @@
   function updateMunicipality() {
     var m = selected();
     $('#mun-title').textContent = m.name + '/' + m.state;
+<<<<<<< HEAD
     $('#mun-updated').textContent = m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') + (m.riverRelativo ? ' · Nível relativo ao mínimo dos últimos 7 dias' : '') : 'Sem leituras recentes das estações.';
+=======
+    $('#mun-updated').textContent = m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') : 'Sem leituras recentes das estações.';
+>>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
     $('#status-badge').innerHTML = m.semDados ? '' : PA.riskBadge(m.level, 'lg');
     $('#status-desc').textContent = m.semDados ? 'Não há leituras recentes das estações deste município. Nenhum nível de risco é calculado sem dados.' : descs[m.level];
     $('[data-stat="rain"]').textContent = num(m.rainfall24h);
