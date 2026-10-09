@@ -118,13 +118,16 @@
   function drawCharts() {
     var m = getMunicipality(state.selectedId) || municipalities[0];
     var r = $('#chart-rain'), v = $('#chart-river');
-    if (r) {
+    var vazio = '<p class="chart-empty" style="padding:48px 8px;text-align:center;color:var(--color-slate)">Sem leituras recentes das estações para este gráfico.</p>';
+    if (r && !m.rainfallSeries.length) { r.removeAttribute('role'); r.removeAttribute('aria-label'); r.innerHTML = vazio; }
+    else if (r) {
       var rv = m.rainfallSeries.map(function (d) { return d.mm; });
       r.setAttribute('role', 'img');
       r.setAttribute('aria-label', 'Gráfico de precipitação nas últimas 24 horas, variando de ' + Math.min.apply(null, rv) + ' a ' + Math.max.apply(null, rv) + ' milímetros.');
       drawChart(r, { data: m.rainfallSeries, key: 'mm', type: 'bar', unit: ' mm', left: 60, caption: 'Precipitação por horário, em milímetros', colName: 'Precipitação (mm)', tooltipName: 'Precipitação', tooltipUnit: ' mm' });
     }
-    if (v) {
+    if (v && !m.riverSeries.length) { v.removeAttribute('role'); v.removeAttribute('aria-label'); v.innerHTML = vazio; }
+    else if (v) {
       var vv = m.riverSeries.map(function (d) { return d.m; });
       v.setAttribute('role', 'img');
       v.setAttribute('aria-label', 'Gráfico do nível do Rio Paranhana ao longo do dia, variando de ' + Math.min.apply(null, vv).toFixed(2) + ' a ' + Math.max.apply(null, vv).toFixed(2) + ' metros.');
@@ -165,9 +168,9 @@
   function updateMunicipality() {
     var m = selected();
     $('#mun-title').textContent = m.name + '/' + m.state;
-    $('#mun-updated').textContent = 'Última atualização: ' + PA.formatDateTime(m.lastUpdate);
-    $('#status-badge').innerHTML = PA.riskBadge(m.level, 'lg');
-    $('#status-desc').textContent = descs[m.level];
+    $('#mun-updated').textContent = m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') + (m.riverRelativo ? ' · Nível relativo ao mínimo dos últimos 7 dias' : '') : 'Sem leituras recentes das estações.';
+    $('#status-badge').innerHTML = m.semDados ? '' : PA.riskBadge(m.level, 'lg');
+    $('#status-desc').textContent = m.semDados ? 'Não há leituras recentes das estações deste município. Nenhum nível de risco é calculado sem dados.' : descs[m.level];
     $('[data-stat="rain"]').textContent = num(m.rainfall24h);
     $('[data-stat="river"]').textContent = num(m.riverLevel);
     $('[data-stat="change"]').textContent = (m.riverLevelChange > 0 ? '+' : '') + num(m.riverLevelChange);
@@ -178,6 +181,10 @@
       var sel = g.getAttribute('data-map-id') === m.id;
       $('.map-halo', g).setAttribute('display', sel ? 'inline' : 'none');
       $('.map-dot', g).setAttribute('r', sel ? 10 : 8);
+      var mm = getMunicipality(g.getAttribute('data-map-id'));
+      var cor = !mm || mm.semDados ? 'var(--color-slate)' : 'var(--color-risk-' + mm.level + ')';
+      $('.map-halo', g).setAttribute('fill', cor);
+      $('.map-dot', g).setAttribute('fill', cor);
     });
     drawCharts();
   }
@@ -202,7 +209,7 @@
       list.innerHTML = (results.length === 0 ? '<li class="municipality-search__empty">Nenhum município encontrado.</li>' : '') +
         results.map(function (m, i) {
           return '<li role="option" aria-selected="' + (i === active) + '"><button type="button" class="municipality-search__option' + (i === active ? ' is-active' : '') + '" data-mid="' + m.id + '">' +
-            '<span>' + esc(m.name) + '</span><span class="option-level option-level--' + m.level + '">' + lv[m.level] + '</span></button></li>';
+            '<span>' + esc(m.name) + '</span><span class="option-level option-level--' + m.level + '">' + (m.semDados ? 'Sem dados' : lv[m.level]) + '</span></button></li>';
         }).join('');
       list.hidden = !open;
       input.setAttribute('aria-expanded', String(open));

@@ -1,0 +1,8 @@
+# Nunca versionar credenciais ou saídas locais
+.env
+*.env
+__pycache__/
+_site/
+relatorio/
+.venv/
+.cache/

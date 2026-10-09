@@ -1,0 +1,76 @@
+{
+  "_comentario": "Edite aqui as estacoes de cada municipio. 'cemaden' = codigos de PCDs (rede 11, RS). 'ana' = codigos de estacoes telemetricas. Rode o workflow 'Descobrir estacoes' para encontrar codigos que retornam dados. Os limiares sao PLACEHOLDERS: calibre com a Defesa Civil / historico local.",
+  "janela_horas": 24,
+  "passo_horas": 2,
+  "variacao_horas": 6,
+  "cemaden_fuso": "UTC",
+  "ana_fuso": "BRT",
+  "ana_nivel_unidade": "auto",
+  "limiares": {
+    "chuva_24h_mm": {
+      "atencao": 50,
+      "critico": 100
+    },
+    "variacao_nivel_m": {
+      "atencao": 0.5,
+      "critico": 1.0
+    },
+    "cota_nivel_m": {
+      "atencao": null,
+      "critico": null
+    }
+  },
+  "municipios": [
+    {
+      "id": "tres-coroas",
+      "nome": "Três Coroas",
+      "ana": [
+        "87366500"
+      ],
+      "cemaden": [
+        "432170901A",
+        "432170902A",
+        "432170903A"
+      ]
+    },
+    {
+      "id": "igrejinha",
+      "nome": "Igrejinha",
+      "ana": [
+        "87375500"
+      ],
+      "cemaden": []
+    },
+    {
+      "id": "taquara",
+      "nome": "Taquara",
+      "ana": [
+        "87377500",
+        "87376000"
+      ],
+      "cemaden": []
+    },
+    {
+      "id": "gramado",
+      "nome": "Gramado",
+      "ana": [
+        "85729000"
+      ],
+      "cemaden": []
+    },
+    {
+      "id": "canela",
+      "nome": "Canela",
+      "ana": [
+        "87361100",
+        "87361000"
+      ],
+      "cemaden": [
+        "430440801A",
+        "430440802A",
+        "430440803A"
+      ]
+    }
+  ],
+  "ana_nivel_modo": "auto"
+}

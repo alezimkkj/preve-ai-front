@@ -1,0 +1,32 @@
+name: Descobrir estacoes
+
+on:
+  workflow_dispatch:   # so roda quando voce clicar em "Run workflow"
+
+permissions:
+  contents: read
+
+jobs:
+  descobrir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Procurar estacoes que retornam dados
+        env:
+          ANA_USUARIO: ${{ secrets.ANA_USUARIO }}
+          ANA_SENHA: ${{ secrets.ANA_SENHA }}
+          CEMADEN_EMAIL: ${{ secrets.CEMADEN_EMAIL }}
+          CEMADEN_SENHA: ${{ secrets.CEMADEN_SENHA }}
+          CEMADEN_TOKEN: ${{ secrets.CEMADEN_TOKEN }}
+        run: |
+          python scripts/descobrir.py
+          cat relatorio/descoberta.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-descoberta
+          path: relatorio/
