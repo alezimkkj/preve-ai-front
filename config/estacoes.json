@@ -7,15 +7,66 @@
   "ana_fuso": "BRT",
   "ana_nivel_unidade": "auto",
   "limiares": {
-    "chuva_24h_mm": { "atencao": 50, "critico": 100 },
-    "variacao_nivel_m": { "atencao": 0.5, "critico": 1.0 },
-    "cota_nivel_m": { "atencao": null, "critico": null }
+    "chuva_24h_mm": {
+      "atencao": 50,
+      "critico": 100
+    },
+    "variacao_nivel_m": {
+      "atencao": 0.5,
+      "critico": 1.0
+    },
+    "cota_nivel_m": {
+      "atencao": null,
+      "critico": null
+    }
   },
   "municipios": [
-    { "id": "tres-coroas", "nome": "Três Coroas", "ana": ["87366500"], "cemaden": ["432170903A", "432170902A", "432170901A"] },
-    { "id": "igrejinha",   "nome": "Igrejinha",   "ana": ["87375500"], "cemaden": [] },
-    { "id": "taquara",     "nome": "Taquara",     "ana": [], "cemaden": [] },
-    { "id": "gramado",     "nome": "Gramado",     "ana": [], "cemaden": [] },
-    { "id": "canela",      "nome": "Canela",      "ana": [], "cemaden": [] }
-  ]
+    {
+      "id": "tres-coroas",
+      "nome": "Três Coroas",
+      "ana": [
+        "87366500"
+      ],
+      "cemaden": [
+        "432170903A",
+        "432170902A",
+        "432170901A"
+      ]
+    },
+    {
+      "id": "igrejinha",
+      "nome": "Igrejinha",
+      "ana": [
+        "87375500"
+      ],
+      "cemaden": []
+    },
+    {
+      "id": "taquara",
+      "nome": "Taquara",
+      "ana": [
+        "87377500",
+        "87376000"
+      ],
+      "cemaden": []
+    },
+    {
+      "id": "gramado",
+      "nome": "Gramado",
+      "ana": [
+        "85729000"
+      ],
+      "cemaden": []
+    },
+    {
+      "id": "canela",
+      "nome": "Canela",
+      "ana": [
+        "87361100",
+        "87361000"
+      ],
+      "cemaden": []
+    }
+  ],
+  "ana_nivel_modo": "auto"
 }
