@@ -32,3 +32,13 @@ Credenciais nunca ficam no código nem no site publicado.
 ## Teste local
 `python tests/teste_pipeline.py` (dados simulados, sem internet).
 Com credenciais: exporte as variáveis (`export ANA_USUARIO=...`) e rode `python scripts/coletar.py`.
+
+## Modo demonstração
+Municípios sem leituras reais aparecem com dados **fictícios**, sempre identificados como
+"Dados demonstrativos" (arquivo `assets/js/data-demo.js`). Municípios com dados reais nunca são substituídos.
+Para desligar (produção): em `assets/js/data-demo.js`, troque `window.demoAtivo = true;` por `window.demoAtivo = false;`.
+
+## Evitar conflitos no git
+`assets/js/data.js` é gerado pelo `scripts/coletar.py`. Não rode o coletor localmente para commitar esse arquivo;
+antes de enviar alterações use `git pull --rebase origin main`. Se o git avisar "CONFLICT", resolva antes de
+fazer commit: nenhum arquivo pode conter linhas `<<<<<<<`, `=======` ou `>>>>>>>`.

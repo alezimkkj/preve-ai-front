@@ -8,6 +8,15 @@
     municipalityFilter: 'todos',
     searchQuery: ''
   };
+  // Demonstracao: so substitui municipios SEM leituras reais, e sempre identificados como demo (ver data-demo.js)
+  (function aplicarDemo() {
+    if (!window.demoAtivo || !window.demoMunicipalities) return;
+    var demo = {};
+    window.demoMunicipalities.forEach(function (d) { demo[d.id] = d; });
+    window.municipalities = window.municipalities.map(function (m) {
+      return m.semDados && demo[m.id] ? demo[m.id] : m;
+    });
+  })();
   function getMunicipality(id) { return municipalities.filter(function (m) { return m.id === id; })[0]; }
   function selected() { return getMunicipality(state.selectedId) || municipalities[0]; }
 
@@ -119,14 +128,14 @@
     var m = getMunicipality(state.selectedId) || municipalities[0];
     var r = $('#chart-rain'), v = $('#chart-river');
     var vazio = '<p class="chart-empty" style="padding:48px 8px;text-align:center;color:var(--color-slate)">Sem leituras recentes das estações para este gráfico.</p>';
-    if (r && !m.rainfallSeries.length) { r.removeAttribute('role'); r.removeAttribute('aria-label'); r.innerHTML = vazio; }
+    if (r && m.rainfallSeries.length < 2) { r.removeAttribute('role'); r.removeAttribute('aria-label'); r.innerHTML = vazio; }
     else if (r) {
       var rv = m.rainfallSeries.map(function (d) { return d.mm; });
       r.setAttribute('role', 'img');
       r.setAttribute('aria-label', 'Gráfico de precipitação nas últimas 24 horas, variando de ' + Math.min.apply(null, rv) + ' a ' + Math.max.apply(null, rv) + ' milímetros.');
       drawChart(r, { data: m.rainfallSeries, key: 'mm', type: 'bar', unit: ' mm', left: 60, caption: 'Precipitação por horário, em milímetros', colName: 'Precipitação (mm)', tooltipName: 'Precipitação', tooltipUnit: ' mm' });
     }
-    if (v && !m.riverSeries.length) { v.removeAttribute('role'); v.removeAttribute('aria-label'); v.innerHTML = vazio; }
+    if (v && m.riverSeries.length < 2) { v.removeAttribute('role'); v.removeAttribute('aria-label'); v.innerHTML = vazio; }
     else if (v) {
       var vv = m.riverSeries.map(function (d) { return d.m; });
       v.setAttribute('role', 'img');
@@ -168,18 +177,16 @@
   function updateMunicipality() {
     var m = selected();
     $('#mun-title').textContent = m.name + '/' + m.state;
-<<<<<<< HEAD
-    $('#mun-updated').textContent = m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') + (m.riverRelativo ? ' · Nível relativo ao mínimo dos últimos 7 dias' : '') : 'Sem leituras recentes das estações.';
-=======
-    $('#mun-updated').textContent = m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') : 'Sem leituras recentes das estações.';
->>>>>>> ffd93cb3eda549470682f9c759784792ba6ff296
+    $('#mun-updated').textContent = m.demo ? 'Dados demonstrativos (fictícios) — não refletem as condições reais.' : m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') + (m.riverRelativo ? ' · Nível relativo ao mínimo dos últimos 7 dias' : '') : 'Sem leituras recentes das estações.';
+    var badgeTxt = $('#data-badge-text');
+    if (badgeTxt) badgeTxt.textContent = m.demo ? 'Dados demonstrativos (fictícios)' : 'Dados reais (ANA/CEMADEN)';
     $('#status-badge').innerHTML = m.semDados ? '' : PA.riskBadge(m.level, 'lg');
     $('#status-desc').textContent = m.semDados ? 'Não há leituras recentes das estações deste município. Nenhum nível de risco é calculado sem dados.' : descs[m.level];
     $('[data-stat="rain"]').textContent = num(m.rainfall24h);
     $('[data-stat="river"]').textContent = num(m.riverLevel);
     $('[data-stat="change"]').textContent = (m.riverLevelChange > 0 ? '+' : '') + num(m.riverLevelChange);
     $('[data-stat="temp"]').textContent = num(m.temperature);
-    $('[data-stat="hum"]').textContent = String(m.humidity);
+    $('[data-stat="hum"]').textContent = num(m.humidity);
     $('#stat-change-card').classList.toggle('stat-card--atencao', m.riverLevelChange > 0.15);
     $all('[data-map-id]').forEach(function (g) {
       var sel = g.getAttribute('data-map-id') === m.id;
