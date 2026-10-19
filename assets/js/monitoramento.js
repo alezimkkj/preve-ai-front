@@ -64,6 +64,8 @@
     var vals = cfg.data.map(function (d) { return d[cfg.key]; });
     var lo = cfg.type === 'bar' ? 0 : Math.min.apply(null, vals) - 0.2;
     var hi = Math.max.apply(null, vals) + (cfg.type === 'bar' ? 0 : 0.2);
+    var semChuva = cfg.type === 'bar' && hi <= 0;
+    if (semChuva) hi = 5; // eixo 0–5 mm quando não choveu, para o gráfico não parecer vazio
     var ticks = niceTicks(lo, hi, 5);
     var dMin = cfg.type === 'bar' ? 0 : ticks[0] < lo ? lo : ticks[0];
     var dMax = cfg.type === 'bar' ? ticks[ticks.length - 1] : hi;
@@ -85,6 +87,9 @@
     cfg.data.forEach(function (d, i) {
       s += '<text x="' + xS(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="12" fill="var(--color-slate)">' + d.hour + '</text>';
     });
+    if (semChuva) {
+      s += '<text x="' + (M.left + pw / 2) + '" y="' + (M.top + ph / 2) + '" text-anchor="middle" font-size="14" fill="var(--color-slate)">Sem chuva registrada neste período</text>';
+    }
     if (cfg.type === 'bar') {
       var bw = Math.min(28, band * 0.7);
       cfg.data.forEach(function (d, i) {
