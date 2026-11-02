@@ -182,9 +182,9 @@
   function updateMunicipality() {
     var m = selected();
     $('#mun-title').textContent = m.name + '/' + m.state;
-    $('#mun-updated').textContent = m.demo ? 'Dados demonstrativos (fictícios) — não refletem as condições reais.' : m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') + (m.riverRelativo ? ' · Nível relativo ao mínimo dos últimos 7 dias' : '') : 'Sem leituras recentes das estações.';
+    $('#mun-updated').textContent = m.demo ? 'Dados demonstrativos (fictícios) — não refletem as condições reais.' : m.lastUpdate ? 'Última atualização: ' + PA.formatDateTime(m.lastUpdate) + (m.fonte ? ' · Fonte: ' + m.fonte : '') + (m.modeloCampos && m.modeloCampos.length ? ' · Dado de modelo (não é estação): ' + m.modeloCampos.join(', ') : '') + (m.riverRelativo ? ' · Nível relativo ao mínimo dos últimos 7 dias' : '') : 'Sem leituras recentes das estações.';
     var badgeTxt = $('#data-badge-text');
-    if (badgeTxt) badgeTxt.textContent = m.demo ? 'Dados demonstrativos (fictícios)' : 'Dados reais (ANA/CEMADEN)';
+    if (badgeTxt) badgeTxt.textContent = m.demo ? 'Dados demonstrativos (fictícios)' : (m.modeloCampos && m.modeloCampos.length ? 'ANA/CEMADEN + modelo Open-Meteo' : 'Dados reais (ANA/CEMADEN)');
     $('#status-badge').innerHTML = m.semDados ? '' : PA.riskBadge(m.level, 'lg');
     $('#status-desc').textContent = m.semDados ? 'Não há leituras recentes das estações deste município. Nenhum nível de risco é calculado sem dados.' : descs[m.level];
     $('[data-stat="rain"]').textContent = num(m.rainfall24h);

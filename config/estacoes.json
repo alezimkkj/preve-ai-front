@@ -31,7 +31,9 @@
         "432170901A",
         "432170902A",
         "432170903A"
-      ]
+      ],
+      "latitude": -29.5178,
+      "longitude": -50.7739
     },
     {
       "id": "igrejinha",
@@ -39,7 +41,9 @@
       "ana": [
         "87375500"
       ],
-      "cemaden": []
+      "cemaden": [],
+      "latitude": -29.5719,
+      "longitude": -50.7917
     },
     {
       "id": "taquara",
@@ -48,7 +52,9 @@
         "87377500",
         "87376000"
       ],
-      "cemaden": []
+      "cemaden": [],
+      "latitude": -29.6503,
+      "longitude": -50.7753
     },
     {
       "id": "gramado",
@@ -56,7 +62,9 @@
       "ana": [
         "85729000"
       ],
-      "cemaden": []
+      "cemaden": [],
+      "latitude": -29.3789,
+      "longitude": -50.8739
     },
     {
       "id": "canela",
@@ -69,8 +77,12 @@
         "430440801A",
         "430440802A",
         "430440803A"
-      ]
+      ],
+      "latitude": -29.3644,
+      "longitude": -50.8119
     }
   ],
-  "ana_nivel_modo": "auto"
+  "ana_nivel_modo": "auto",
+  "_comentario_modelo": "Open-Meteo (dado de MODELO, nao e estacao) preenche temperatura, umidade e, em ultimo caso, chuva quando nenhuma estacao ANA/CEMADEN entrega. Coordenadas aproximadas da sede do municipio. Para desligar: \"open_meteo\": false.",
+  "open_meteo": true
 }

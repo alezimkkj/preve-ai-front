@@ -7,6 +7,8 @@
     "state": "RS",
     "level": "normal",
     "semDados": true,
+    "dadoReal": false,
+    "modeloCampos": [],
     "motivos": [],
     "rainfall24h": null,
     "riverLevel": null,
@@ -25,6 +27,8 @@
     "state": "RS",
     "level": "normal",
     "semDados": true,
+    "dadoReal": false,
+    "modeloCampos": [],
     "motivos": [],
     "rainfall24h": null,
     "riverLevel": null,
@@ -43,6 +47,8 @@
     "state": "RS",
     "level": "normal",
     "semDados": true,
+    "dadoReal": false,
+    "modeloCampos": [],
     "motivos": [],
     "rainfall24h": null,
     "riverLevel": null,
@@ -61,6 +67,8 @@
     "state": "RS",
     "level": "normal",
     "semDados": true,
+    "dadoReal": false,
+    "modeloCampos": [],
     "motivos": [],
     "rainfall24h": null,
     "riverLevel": null,
@@ -79,6 +87,8 @@
     "state": "RS",
     "level": "normal",
     "semDados": true,
+    "dadoReal": false,
+    "modeloCampos": [],
     "motivos": [],
     "rainfall24h": null,
     "riverLevel": null,
@@ -93,5 +103,5 @@
   }
 ];
   window.seedAlerts = [];
-  window.dadosMeta = {"geradoEm": "2026-10-09T09:00:47.709061-03:00", "fontes": ["ANA", "CEMADEN"], "municipiosComDados": 0};
+  window.dadosMeta = {"geradoEm": "2026-11-02T13:37:51.877358-03:00", "fontes": ["ANA", "CEMADEN"], "municipiosComDados": 0, "municipiosComDadosReais": 0};
 })();

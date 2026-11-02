@@ -55,4 +55,28 @@ assert tc["temperature"] is None            # a PED so entrega pluviometro nesta
 curto = col.montar(cfg, {"432170903A": r1}, ana_cache, agora)
 assert next(m for m in curto if m["id"] == "tres-coroas")["fonte"].startswith("ANA")
 assert all(m["semDados"] for m in muns if m["id"] in ("taquara", "gramado"))
+
+# 4) Open-Meteo (modelo): preenche temperatura/umidade e, sem estacao com chuva, a chuva; sempre rotulado
+modelo_ok = {"temp": 21.4, "umid": 78.0, "t": agora,
+             "chuva": [{"t": agora.replace(minute=0, second=0) - timedelta(hours=h), "chuva": 0.5} for h in range(0, 30)]}
+com = col.montar(cfg, cem_cache, ana_cache, agora, {m["id"]: modelo_ok for m in cfg["municipios"]})
+tc2 = next(m for m in com if m["id"] == "tres-coroas")
+assert tc2["temperature"] == 21.4 and tc2["humidity"] == 78 and "temperatura" in tc2["modeloCampos"], tc2
+assert "Open-Meteo (modelo)" in tc2["fonte"] and tc2["fonte"].startswith("CEMADEN")   # chuva continua da estacao
+assert "chuva" not in tc2["modeloCampos"] and tc2["dadoReal"]
+gr = next(m for m in com if m["id"] == "gramado")                                     # sem estacao com dados: tudo de modelo
+assert not gr["semDados"] and gr["rainfall24h"] is not None and gr["fonte"] == "Open-Meteo (modelo)", gr
+assert gr["modeloCampos"] == ["temperatura", "umidade", "chuva"] and not gr["dadoReal"] and gr["riverLevel"] is None
+assert 11 <= gr["rainfall24h"] <= 12.5, gr["rainfall24h"]                              # 24 h x 0.5 mm
+
+# 5) sem modelo, tudo igual ao comportamento anterior
+assert next(m for m in col.montar(cfg, cem_cache, ana_cache, agora) if m["id"] == "gramado")["semDados"]
+
+# 6) normalizacao da resposta da Open-Meteo (formato real da API)
+import types
+resp = {"current": {"time": "2026-10-07T14:15", "temperature_2m": 20.1, "relative_humidity_2m": 81},
+        "hourly": {"time": ["2026-10-07T13:00", "2026-10-07T14:00"], "precipitation": [0.2, None]}}
+c.requests.get = lambda *a, **k: types.SimpleNamespace(raise_for_status=lambda: None, json=lambda: resp)
+om = c.open_meteo(-29.4, -50.8)
+assert om["temp"] == 20.1 and om["umid"] == 81 and len(om["chuva"]) == 1 and om["chuva"][0]["t"].hour == 13
 print("OK - pipeline simulado funcionando")

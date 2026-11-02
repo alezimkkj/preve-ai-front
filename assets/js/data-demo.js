@@ -5,7 +5,7 @@
  *
  * Para DESLIGAR a demonstracao (producao), troque a linha abaixo por:  window.demoAtivo = false;
  */
-window.demoAtivo = true;
+window.demoAtivo = false;
 
 (function () {
   function buildRainfallSeries(base, spike) {

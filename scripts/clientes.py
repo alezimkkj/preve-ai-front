@@ -38,7 +38,7 @@ def para_float(v):
 
 
 _FORMATOS = ("%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S.%f",
-             "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M")
+             "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M", "%Y-%m-%d %H:%M", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M")
 
 
 def parse_data(valor, fuso):
@@ -262,3 +262,29 @@ def normalizar_ana(payload, fuso=BRT, unidade="auto"):
             b["chuva"] = None
     return sorted([b for b in bruto if b["nivel"] is not None or b["chuva"] is not None],
                   key=lambda x: x["t"])
+
+
+# ---------------------------------------------------------------- OPEN-METEO
+OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
+
+
+def open_meteo(lat, lon, horas=36):
+    """Dado de MODELO (nao e estacao). Gratuito, sem chave. Retorna dict normalizado:
+    {"temp": float|None, "umid": float|None, "t": datetime|None, "chuva": [{"t": UTC, "chuva": mm}, ...]}.
+    A precipitacao horaria em T e o acumulado da hora que TERMINA em T."""
+    r = requests.get(OPEN_METEO_URL, timeout=TIMEOUT, params={
+        "latitude": lat, "longitude": lon, "timezone": "UTC",
+        "current": "temperature_2m,relative_humidity_2m",
+        "hourly": "precipitation", "past_hours": horas, "forecast_hours": 1,
+    })
+    r.raise_for_status()
+    j = r.json()
+    cur = j.get("current") or {}
+    hor = j.get("hourly") or {}
+    chuva = []
+    for t, v in zip(hor.get("time") or [], hor.get("precipitation") or []):
+        dt, mm = parse_data(t, UTC), para_float(v)
+        if dt is not None and mm is not None:
+            chuva.append({"t": dt, "chuva": mm})
+    return {"temp": para_float(cur.get("temperature_2m")), "umid": para_float(cur.get("relative_humidity_2m")),
+            "t": parse_data(cur.get("time"), UTC), "chuva": chuva}

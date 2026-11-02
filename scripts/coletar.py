@@ -21,6 +21,7 @@ HISTORICO = RAIZ / ".cache" / "cemaden_historico.json"
 HORAS_HISTORICO = 36
 NIVEIS = {"normal": 0, "atencao": 1, "critico": 2}
 NOME_NIVEL = {v: k for k, v in NIVEIS.items()}
+MODELO = "Open-Meteo (modelo)"
 
 
 # ------------------------------------------------------------------ calculos
@@ -116,7 +117,7 @@ def _ajustar_cota(cfg, regs):
     return regs, False
 
 
-def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
+def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora, modelo=None):
     """cem_regs: lista (por estacao) de registros CEMADEN; ana_regs: idem ANA."""
     passo = cfg["passo_horas"]
     n = cfg["janela_horas"] // passo
@@ -139,6 +140,8 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
         fontes_chuva, fonte_chuva = ana_chuva, "ANA"
     elif cem_chuva:
         fontes_chuva, fonte_chuva = cem_chuva, "CEMADEN"
+    elif modelo and modelo.get("chuva") and max(r["t"] for r in modelo["chuva"]) >= agora - timedelta(hours=6):
+        fontes_chuva, fonte_chuva = [modelo["chuva"]], MODELO
     else:
         fontes_chuva, fonte_chuva = [], ""
     chuva24 = chuva_total(fontes_chuva, agora, cfg["janela_horas"])
@@ -172,8 +175,20 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
                 vs.append(cand[-1][campo])
         return _media(vs)
     temp, umid = ultimo("temp"), ultimo("umid")
+    modelo_campos = []
+    if modelo:
+        if temp is None and modelo.get("temp") is not None:
+            temp = modelo["temp"]; modelo_campos.append("temperatura")
+        if umid is None and modelo.get("umid") is not None:
+            umid = modelo["umid"]; modelo_campos.append("umidade")
+    if fonte_chuva == MODELO:
+        modelo_campos.append("chuva")
 
     marcas = [r["t"] for rs in cem_regs for r in rs] + [r["t"] for rs in ana_regs for r in rs]
+    if modelo and modelo_campos and modelo.get("t"):
+        marcas.append(modelo["t"])
+    dado_real = (chuva24 is not None and fonte_chuva != MODELO) or nivel_atual is not None \
+        or (temp is not None and "temperatura" not in modelo_campos)
     tem_dado = chuva24 is not None or nivel_atual is not None or temp is not None
     nivel_risco, motivos = classificar(cfg, chuva24, nivel_atual, variacao)
     fontes = []
@@ -181,12 +196,17 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora):
         fontes.append(fonte_chuva)
     if any(r["nivel"] is not None for rs in ana_regs for r in rs) and "ANA" not in fontes:
         fontes.append("ANA")
-    if (temp is not None or umid is not None) and "CEMADEN" not in fontes:
+    if (temp is not None or umid is not None) and len(modelo_campos) < sum(x is not None for x in (temp, umid)) \
+            and "CEMADEN" not in fontes:
         fontes.append("CEMADEN")
+    if modelo_campos and MODELO not in fontes:
+        fontes.append(MODELO)
     return {
         "id": mun["id"], "name": mun["nome"], "state": "RS",
         "level": nivel_risco if tem_dado else "normal",
         "semDados": not tem_dado,
+        "dadoReal": dado_real,
+        "modeloCampos": modelo_campos,
         "motivos": motivos,
         "rainfall24h": None if chuva24 is None else round(chuva24, 1),
         "riverLevel": nivel_atual,
@@ -262,6 +282,21 @@ def coletar(cfg, agora):
     return cem_cache, ana_cache, erros
 
 
+def coletar_modelo(cfg):
+    """Open-Meteo por municipio (dado de modelo). Falha de um municipio nao derruba os outros."""
+    out, erros = {}, []
+    if not cfg.get("open_meteo", True):
+        return out, erros
+    for m in cfg["municipios"]:
+        if m.get("latitude") is None or m.get("longitude") is None:
+            continue
+        try:
+            out[m["id"]] = c.open_meteo(m["latitude"], m["longitude"])
+        except Exception as e:  # noqa: BLE001
+            erros.append(f"Open-Meteo {m['id']}: {type(e).__name__}")
+    return out, erros
+
+
 def acumular_historico(cem_cache, agora):
     """A API do CEMADEN devolve so ~1-2 h por estacao. Guardamos as leituras entre execucoes
     (cache do GitHub Actions) para formar a janela de 24 h."""
@@ -286,27 +321,31 @@ def acumular_historico(cem_cache, agora):
     return novo
 
 
-def montar(cfg, cem_cache, ana_cache, agora):
+def montar(cfg, cem_cache, ana_cache, agora, modelos=None):
     muns = []
     for m in cfg["municipios"]:
         cem = [cem_cache[x] for x in m["cemaden"] if cem_cache.get(x)]
         ana = [ana_cache[x] for x in m["ana"] if ana_cache.get(x)]
-        muns.append(calcular_municipio(cfg, m, cem, ana, agora))
+        muns.append(calcular_municipio(cfg, m, cem, ana, agora, (modelos or {}).get(m["id"])))
     return muns
 
 
 def main():
     cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
     agora = datetime.now(c.UTC)
+    modelos = {}
     if "--vazio" in sys.argv:
         cem, ana, erros = {}, {}, []
     else:
         cem, ana, erros = coletar(cfg, agora)
+        modelos, erros_mod = coletar_modelo(cfg)
+        erros += erros_mod
         print(f"Token CEMADEN: {c.INFO['token']}")
         cem = acumular_historico(cem, agora)
-    muns = montar(cfg, cem, ana, agora)
-    meta = {"geradoEm": agora.astimezone(c.BRT).isoformat(), "fontes": ["ANA", "CEMADEN"],
-            "municipiosComDados": sum(1 for m in muns if not m["semDados"])}
+    muns = montar(cfg, cem, ana, agora, modelos)
+    meta = {"geradoEm": agora.astimezone(c.BRT).isoformat(), "fontes": ["ANA", "CEMADEN"] + ([MODELO] if modelos else []),
+            "municipiosComDados": sum(1 for m in muns if not m["semDados"]),
+            "municipiosComDadosReais": sum(1 for m in muns if m["dadoReal"])}
     escrever_data_js(muns, alertas_automaticos(muns), meta)
 
     print(f"data.js gerado: {meta['municipiosComDados']}/{len(muns)} municipios com dados")
@@ -315,8 +354,8 @@ def main():
     for e in erros:
         print(f"  ! {e}")
     # Falha o job somente se NADA foi coletado numa execucao real (evita publicar site vazio por engano)
-    if "--vazio" not in sys.argv and meta["municipiosComDados"] == 0:
-        print("Nenhum municipio com dados: abortando para nao publicar painel vazio.")
+    if "--vazio" not in sys.argv and meta["municipiosComDadosReais"] == 0:
+        print("Nenhuma estacao ANA/CEMADEN retornou dados (so modelo): abortando para nao publicar painel vazio.")
         sys.exit(1)
 
 

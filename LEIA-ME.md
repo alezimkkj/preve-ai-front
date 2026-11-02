@@ -25,16 +25,18 @@ Credenciais nunca ficam no código nem no site publicado.
 - Chuva 24 h: soma por estação CEMADEN nas últimas 24 h; estações do mesmo município são mescladas pela média
   (só entram as que têm leitura no intervalo). Reserva: chuva da ANA.
 - Nível do rio e variação (padrão 6 h): estação ANA com a leitura mais recente.
-- Temperatura/umidade: última leitura (até 3 h) das estações CEMADEN, média.
+- Temperatura/umidade: última leitura (até 3 h) das estações CEMADEN, média. Se nenhuma estação tiver esses sensores (caso atual: as PCDs só medem chuva), usa o **Open-Meteo** pelas coordenadas do município (`latitude`/`longitude` em `config/estacoes.json`).
+- Open-Meteo é **dado de modelo, não de estação**: gratuito, sem chave, e sempre rotulado no painel ("Dado de modelo"). Também é a última reserva para chuva 24 h (depois de CEMADEN e ANA). Para desligar: `"open_meteo": false` no config.
 - Risco: limiares em `config/estacoes.json` (**provisórios** — calibre com a Defesa Civil).
-- Sem leitura recente → o município aparece como "Sem dados"; nenhum valor é estimado.
+- Sem leitura de nenhuma fonte → o município aparece como "Sem dados". O nível do rio nunca vem de modelo.
+- O job só falha se **nenhuma estação ANA/CEMADEN** retornar dados (o modelo sozinho não basta para publicar).
 
 ## Teste local
 `python tests/teste_pipeline.py` (dados simulados, sem internet).
 Com credenciais: exporte as variáveis (`export ANA_USUARIO=...`) e rode `python scripts/coletar.py`.
 
 ## Modo demonstração
-Municípios sem leituras reais aparecem com dados **fictícios**, sempre identificados como
+(Desligado por padrão: `demoAtivo = false`.) Municípios sem leituras reais aparecem com dados **fictícios**, sempre identificados como
 "Dados demonstrativos" (arquivo `assets/js/data-demo.js`). Municípios com dados reais nunca são substituídos.
 Para desligar (produção): em `assets/js/data-demo.js`, troque `window.demoAtivo = true;` por `window.demoAtivo = false;`.
 
