@@ -3,9 +3,9 @@ PrevêAÍ
 Sistema de monitoramento hidrometeorológico desenvolvido como parte do projeto de pesquisa PrevêAÍ, com foco no acompanhamento das condições meteorológicas e do nível do Rio Paranhana, em Três Coroas/RS, e na comunicação de informações que auxiliem a população na prevenção de riscos de inundação.
 Links
 
-    Aplicação publicada (GitHub Pages): [INSERIR LINK]
+    Aplicação publicada (GitHub Pages):  https://alezimkkj.github.io/preve-ai-front/
 
-    Repositório (GitHub): [INSERIR LINK]
+    Repositório (GitHub): https://github.com/alezimkkj/preve-ai-front
 
 Sobre o projeto
 
