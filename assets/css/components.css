@@ -720,6 +720,70 @@ section.section.page-hero#search-section, section.section.page-hero#section-func
   line-height: 1.55;
 }
 
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 860px) {
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scenario-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-left: 4px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.scenario-card--normal {
+  border-left-color: var(--color-risk-normal);
+}
+
+.scenario-card--atencao {
+  border-left-color: var(--color-risk-atencao);
+}
+
+.scenario-card--critico {
+  border-left-color: var(--color-risk-critico);
+}
+
+.scenario-card .risk-badge {
+  align-self: flex-start;
+}
+
+.scenario-card h3 {
+  font-size: 1.02rem;
+}
+
+.scenario-card p {
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.scenario-card__action {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.scenario-card__action strong {
+  color: var(--color-ink);
+}
+
+.scenario-note {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: var(--color-slate);
+}
+
 .tech-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
