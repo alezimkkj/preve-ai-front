@@ -1,7 +1,6 @@
 :root {
   color-scheme: light;
 
-  /* Brand */
   --color-brand-900: #0b2a4a;
   --color-brand-800: #103a63;
   --color-brand-700: #164d82;
@@ -10,7 +9,6 @@
   --color-brand-400: #5c8ff0;
   --color-brand-100: #e5eefc;
 
-  /* Neutrals */
   --color-ink: #101826;
   --color-ink-soft: #33465c;
   --color-slate: #5b6b82;
@@ -22,7 +20,6 @@
   --color-bg: #f5f8fc;
   --color-bg-alt: #eef3fa;
 
-  /* Risk semantics */
   --color-risk-normal: #1c8a4a;
   --color-risk-normal-bg: #e7f6ec;
   --color-risk-atencao: #c77700;
@@ -30,11 +27,9 @@
   --color-risk-critico: #c81e3a;
   --color-risk-critico-bg: #fbe6e9;
 
-  /* Typography */
   --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* Radius / elevation */
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
