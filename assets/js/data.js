@@ -1,4 +1,3 @@
-// ARQUIVO GERADO por scripts/coletar.py — nao edite a mao.
 (function () {
   window.municipalities = [
   {
