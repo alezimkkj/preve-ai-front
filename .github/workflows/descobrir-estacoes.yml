@@ -1,7 +1,7 @@
 name: Descobrir estacoes
 
 on:
-  workflow_dispatch:   # so roda quando voce clicar em "Run workflow"
+  workflow_dispatch:
 
 permissions:
   contents: read
