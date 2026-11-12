@@ -1,8 +1,3 @@
-"""Clientes das APIs da ANA (Hidroweb) e do CEMADEN + normalizacao dos dados.
-
-Nenhuma credencial fica no codigo: tudo vem de variaveis de ambiente
-(no GitHub Actions, de 'Secrets'). Nada aqui imprime tokens ou senhas.
-"""
 import os
 import re
 import unicodedata
@@ -17,7 +12,6 @@ BRT = timezone(timedelta(hours=-3))
 UTC = timezone.utc
 
 
-# ---------------------------------------------------------------- utilidades
 def sem_acento(s):
     s = unicodedata.normalize("NFD", str(s))
     return "".join(c for c in s if unicodedata.category(c) != "Mn").lower().strip()
@@ -42,7 +36,6 @@ _FORMATOS = ("%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S.%f"
 
 
 def parse_data(valor, fuso):
-    """Converte texto de data em datetime com fuso (UTC). `fuso` e o fuso do texto."""
     if valor is None:
         return None
     if isinstance(valor, (int, float)):
@@ -52,7 +45,7 @@ def parse_data(valor, fuso):
     if s.endswith("Z"):
         s = s[:-1]
         fuso = UTC
-    if "T" in s and re.search(r"[+-]\d\d:?\d\d$", s):  # ISO com deslocamento explicito
+    if "T" in s and re.search(r"[+-]\d\d:?\d\d$", s):
         try:
             return datetime.fromisoformat(s).astimezone(UTC)
         except ValueError:
@@ -90,12 +83,10 @@ def _primeiro(d, chaves):
     return None
 
 
-# ------------------------------------------------------------------- CEMADEN
 INFO = {"token": "nenhum"}
 
 
 def _expira_em_h(token):
-    """Horas ate o JWT expirar (le so o claim 'exp'); None se nao der para ler."""
     try:
         import base64
         import json
@@ -104,14 +95,11 @@ def _expira_em_h(token):
         corpo += "=" * (-len(corpo) % 4)
         exp = json.loads(base64.urlsafe_b64decode(corpo)).get("exp")
         return None if exp is None else (exp - time.time()) / 3600
-    except Exception:  # noqa: BLE001
+    except Exception:
         return None
 
 
 def cemaden_token():
-    """Token do CEMADEN. O token dura poucas horas, entao o ideal e gerar um novo
-    a cada execucao com e-mail/senha (secrets CEMADEN_EMAIL e CEMADEN_SENHA).
-    CEMADEN_TOKEN (fixo) so funciona enquanto nao expirar."""
     email, senha = os.environ.get("CEMADEN_EMAIL"), os.environ.get("CEMADEN_SENHA")
     erros = []
     if email and senha:
@@ -162,7 +150,6 @@ def cemaden_dados_recentes(token, codestacao, rede="11", uf="RS"):
 
 
 def cemaden_cadastro(token, uf="RS", rede="11"):
-    """Tenta listar o cadastro de PCDs. Devolve (lista, aviso)."""
     ult = ""
     for caminho in ("pcds-cadastro/estacoes", "pcds/pcds-cadastro", "pcds-cadastro"):
         try:
@@ -179,7 +166,6 @@ def cemaden_cadastro(token, uf="RS", rede="11"):
 
 
 def normalizar_cemaden(payload, fuso=UTC):
-    """-> lista de {t (UTC), chuva (mm), temp (C), umid (%)}; aceita formato largo ou longo."""
     out = []
     for r in _extrair_lista(payload):
         r = _minusculas(r)
@@ -188,7 +174,6 @@ def normalizar_cemaden(payload, fuso=UTC):
             continue
         reg = {"t": t, "chuva": None, "temp": None, "umid": None}
         if "id_sensor" in r and "valor" in r and "sensor" not in r:
-            # Formato real da PED: um registro por sensor; id_sensor 10 = pluviometro (mm por leitura)
             if str(r["id_sensor"]).strip() == "10":
                 reg["chuva"] = para_float(r["valor"])
         elif "sensor" in r and "valor" in r:
@@ -203,7 +188,6 @@ def normalizar_cemaden(payload, fuso=UTC):
             reg["chuva"] = para_float(_primeiro(r, ["chuva", "precipitacao", "valor_chuva", "pluviometro"]))
             reg["temp"] = para_float(_primeiro(r, ["temperatura", "temp"]))
             reg["umid"] = para_float(_primeiro(r, ["umidade", "umid"]))
-        # descarta sentinelas/valores absurdos
         if reg["chuva"] is not None and not (0 <= reg["chuva"] < 400):
             reg["chuva"] = None
         if reg["temp"] is not None and not (-20 <= reg["temp"] <= 55):
@@ -215,7 +199,6 @@ def normalizar_cemaden(payload, fuso=UTC):
     return sorted(out, key=lambda x: x["t"])
 
 
-# ----------------------------------------------------------------------- ANA
 def ana_token():
     usuario, senha = os.environ.get("ANA_USUARIO"), os.environ.get("ANA_SENHA")
     if not usuario or not senha:
@@ -238,7 +221,6 @@ def ana_serie(token, codigo, intervalo="DIAS_7", data=None):
 
 
 def normalizar_ana(payload, fuso=BRT, unidade="auto"):
-    """-> lista de {t (UTC), nivel (m), chuva (mm)}."""
     itens = _extrair_lista(payload)
     bruto = []
     for it in itens:
@@ -264,14 +246,10 @@ def normalizar_ana(payload, fuso=BRT, unidade="auto"):
                   key=lambda x: x["t"])
 
 
-# ---------------------------------------------------------------- OPEN-METEO
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 
 
 def open_meteo(lat, lon, horas=36):
-    """Dado de MODELO (nao e estacao). Gratuito, sem chave. Retorna dict normalizado:
-    {"temp": float|None, "umid": float|None, "t": datetime|None, "chuva": [{"t": UTC, "chuva": mm}, ...]}.
-    A precipitacao horaria em T e o acumulado da hora que TERMINA em T."""
     r = requests.get(OPEN_METEO_URL, timeout=TIMEOUT, params={
         "latitude": lat, "longitude": lon, "timezone": "UTC",
         "current": "temperature_2m,relative_humidity_2m",

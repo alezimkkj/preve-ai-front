@@ -47,3 +47,13 @@ A aplicação atende aos cinco critérios estabelecidos para o desenvolvimento d
 Desenvolvimento futuro
 
 A integração com o WhatsApp está prevista como uma etapa futura do projeto. O objetivo é permitir que os usuários recebam notificações e alertas diretamente pelo aplicativo, ampliando o alcance das informações e fortalecendo a comunicação preventiva com a população.
+
+Configuração das estações
+
+Os municípios, as estações (ANA e CEMADEN) e os limiares de alerta ficam em config/estacoes.json. No campo "cemaden" entram os códigos de PCDs da rede 11 (RS) e, no campo "ana", os códigos das estações telemétricas. Para descobrir quais códigos realmente retornam dados, execute manualmente o workflow "Descobrir estacoes" no GitHub Actions.
+
+Os limiares (chuva em 24 h, variação do nível e cota do rio) são provisórios e precisam ser calibrados com a Defesa Civil e o histórico local.
+
+O Open-Meteo é usado apenas como complemento (temperatura, umidade e, em último caso, chuva) quando nenhuma estação ANA/CEMADEN entrega dados. Para desligá-lo, defina "open_meteo": false.
+
+Os segredos ANA_USUARIO, ANA_SENHA, CEMADEN_EMAIL, CEMADEN_SENHA e CEMADEN_TOKEN são lidos dos Secrets do repositório. O arquivo assets/js/data.js é gerado a cada execução do workflow e não deve ser editado manualmente.

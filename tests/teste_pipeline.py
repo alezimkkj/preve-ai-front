@@ -1,4 +1,3 @@
-"""Teste offline do pipeline com respostas SIMULADAS (sem internet).  python tests/teste_pipeline.py"""
 import json
 import sys
 import tempfile
@@ -15,17 +14,14 @@ col.HISTORICO = Path(tempfile.mkdtemp()) / "hist.json"
 
 
 def cem(cod, inicio_min, fim_min, mm=0.4):
-    """Formato REAL da PED: 1 registro por sensor (id_sensor 10 = chuva), UTC, ultimos minutos."""
     return [{"codestacao": cod, "datahora": (agora - timedelta(minutes=m)).strftime("%Y-%m-%d %H:%M:%S"),
              "id_sensor": "10", "valor": "-999" if m == 20 else str(mm), "uf": "RS"}
             for m in range(inicio_min, fim_min, 10)]
 
 
-# 1) uma chamada real traz so ~1 h
 r1 = c.normalizar_cemaden(cem("432170903A", 0, 60))
-assert len(r1) == 5 and all(r["chuva"] == 0.4 for r in r1), r1   # sentinela -999 descartada
+assert len(r1) == 5 and all(r["chuva"] == 0.4 for r in r1), r1
 
-# 2) historico acumulado por 26 h (execucoes a cada 30 min)
 hist = {}
 for k in range(26 * 2, -1, -1):
     agora_k = agora - timedelta(minutes=30 * k)
@@ -49,30 +45,26 @@ print(json.dumps({k: tc[k] for k in ("level", "rainfall24h", "riverLevel", "rive
 assert not tc["semDados"] and len(tc["rainfallSeries"]) == 13 and len(tc["riverSeries"]) == 13
 assert tc["fonte"].startswith("CEMADEN") and 20 < tc["rainfall24h"] < 70, tc["rainfall24h"]
 assert tc["riverRelativo"] and 0 <= tc["riverLevel"] < 15
-assert tc["temperature"] is None            # a PED so entrega pluviometro nestas estacoes
+assert tc["temperature"] is None
 
-# 3) sem historico suficiente, a chuva vem da ANA
 curto = col.montar(cfg, {"432170903A": r1}, ana_cache, agora)
 assert next(m for m in curto if m["id"] == "tres-coroas")["fonte"].startswith("ANA")
 assert all(m["semDados"] for m in muns if m["id"] in ("taquara", "gramado"))
 
-# 4) Open-Meteo (modelo): preenche temperatura/umidade e, sem estacao com chuva, a chuva; sempre rotulado
 modelo_ok = {"temp": 21.4, "umid": 78.0, "t": agora,
              "chuva": [{"t": agora.replace(minute=0, second=0) - timedelta(hours=h), "chuva": 0.5} for h in range(0, 30)]}
 com = col.montar(cfg, cem_cache, ana_cache, agora, {m["id"]: modelo_ok for m in cfg["municipios"]})
 tc2 = next(m for m in com if m["id"] == "tres-coroas")
 assert tc2["temperature"] == 21.4 and tc2["humidity"] == 78 and "temperatura" in tc2["modeloCampos"], tc2
-assert "Open-Meteo (modelo)" in tc2["fonte"] and tc2["fonte"].startswith("CEMADEN")   # chuva continua da estacao
+assert "Open-Meteo (modelo)" in tc2["fonte"] and tc2["fonte"].startswith("CEMADEN")
 assert "chuva" not in tc2["modeloCampos"] and tc2["dadoReal"]
-gr = next(m for m in com if m["id"] == "gramado")                                     # sem estacao com dados: tudo de modelo
+gr = next(m for m in com if m["id"] == "gramado")
 assert not gr["semDados"] and gr["rainfall24h"] is not None and gr["fonte"] == "Open-Meteo (modelo)", gr
 assert gr["modeloCampos"] == ["temperatura", "umidade", "chuva"] and not gr["dadoReal"] and gr["riverLevel"] is None
-assert 11 <= gr["rainfall24h"] <= 12.5, gr["rainfall24h"]                              # 24 h x 0.5 mm
+assert 11 <= gr["rainfall24h"] <= 12.5, gr["rainfall24h"]
 
-# 5) sem modelo, tudo igual ao comportamento anterior
 assert next(m for m in col.montar(cfg, cem_cache, ana_cache, agora) if m["id"] == "gramado")["semDados"]
 
-# 6) normalizacao da resposta da Open-Meteo (formato real da API)
 import types
 resp = {"current": {"time": "2026-10-07T14:15", "temperature_2m": 20.1, "relative_humidity_2m": 81},
         "hourly": {"time": ["2026-10-07T13:00", "2026-10-07T14:00"], "precipitation": [0.2, None]}}

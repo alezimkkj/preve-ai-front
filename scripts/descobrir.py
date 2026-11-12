@@ -1,8 +1,3 @@
-"""Procura estacoes ANA e CEMADEN que RETORNAM DADOS nos municipios do Vale do Paranhana.
-
-Roda pelo workflow 'Descobrir estacoes' (ou localmente com as variaveis de ambiente).
-Gera relatorio/descoberta.md e relatorio/descoberta.json. Nao imprime credenciais.
-"""
 import json
 import sys
 import time
@@ -12,14 +7,14 @@ from pathlib import Path
 import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
-import clientes as c  # noqa: E402
+import clientes as c
 
 RAIZ = Path(__file__).resolve().parent.parent
 CONFIG = json.loads((RAIZ / "config" / "estacoes.json").read_text(encoding="utf-8"))
 ALVOS = [m["nome"] for m in CONFIG["municipios"]] + ["Parobé", "Rolante", "Riozinho"]
 ALVOS = list(dict.fromkeys(ALVOS))
 IBGE_URL = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/43/municipios"
-SEQ_MAX = 20  # sondagem de codigos <ibge><NN>A
+SEQ_MAX = 20
 
 
 def ibge_codigos():
@@ -41,7 +36,6 @@ def tem_registros(payload):
 
 def cemaden(token, ibge):
     achados, sondados = [], 0
-    # 1) cadastro oficial (se a API expuser)
     cadastro, aviso = c.cemaden_cadastro(token)
     cand = {}
     for e in cadastro:
@@ -52,7 +46,6 @@ def cemaden(token, ibge):
                 cod = c._primeiro(e2, ["codestacao", "cod_estacao", "codigo", "id"])
                 if cod:
                     cand[str(cod)] = {"municipio": nome, "nome": str(c._primeiro(e2, ["nome", "nomeestacao", "local"]) or "")}
-    # 2) sondagem por codigo: <IBGE 7 digitos><01..20>A
     for nome, cod_ibge in ibge.items():
         if not cod_ibge:
             continue
@@ -82,7 +75,6 @@ def ana(token, ibge):
     cand = {}
     for cod in {x for m in CONFIG["municipios"] for x in m["ana"]}:
         cand[cod] = {"municipio": "(ja configurada)", "nome": ""}
-    # inventario de estacoes (se a API aceitar os filtros)
     for params in ({"Unidade Federativa": "RS"}, {"Código da Unidade Federativa": "RS"}):
         try:
             r = requests.get("https://www.ana.gov.br/hidrowebservice/EstacoesTelemetricas/HidroInventarioEstacoes/v1",
@@ -129,13 +121,13 @@ def main():
         tok = c.cemaden_token()
         ach, aviso, n = cemaden(tok, ibge)
         rel["cemaden"] = {"aviso": aviso, "codigos_sondados": n, "estacoes_com_dados": ach}
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         rel["cemaden"] = {"erro": str(e)}
     try:
         tok = c.ana_token()
         ach, avisos = ana(tok, ibge)
         rel["ana"] = {"avisos": avisos, "estacoes_com_dados": ach}
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         rel["ana"] = {"erro": type(e).__name__ + ": " + str(e)[:150]}
 
     md = [f"# Descoberta de estacoes — {rel['gerado_em']}", ""]

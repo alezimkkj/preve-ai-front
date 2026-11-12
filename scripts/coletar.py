@@ -1,18 +1,10 @@
-"""Coleta ANA + CEMADEN, mescla as estacoes de cada municipio e gera assets/js/data.js.
-
-Uso:
-    python scripts/coletar.py            # coleta de verdade (precisa das variaveis de ambiente)
-    python scripts/coletar.py --vazio    # gera data.js sem dados (estado inicial do repositorio)
-
-Se uma fonte falhar, o municipio fica marcado como 'semDados' (nunca inventa valor).
-"""
 import json
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-import clientes as c  # noqa: E402
+import clientes as c
 
 RAIZ = Path(__file__).resolve().parent.parent
 CONFIG = RAIZ / "config" / "estacoes.json"
@@ -24,22 +16,18 @@ NOME_NIVEL = {v: k for k, v in NIVEIS.items()}
 MODELO = "Open-Meteo (modelo)"
 
 
-# ------------------------------------------------------------------ calculos
 def _media(xs):
     xs = [x for x in xs if x is not None]
     return sum(xs) / len(xs) if xs else None
 
 
 def _pontos_tempo(agora_utc, n, passo_h):
-    """n+1 instantes alinhados na hora cheia (hora local de Brasilia), do mais antigo ao mais novo."""
     local = agora_utc.astimezone(c.BRT).replace(minute=0, second=0, microsecond=0)
     fim = local.astimezone(c.UTC)
     return [fim - timedelta(hours=passo_h * (n - i)) for i in range(n + 1)]
 
 
 def serie_chuva(estacoes_regs, instantes, passo_h):
-    """Soma por intervalo (t-passo, t] em cada estacao; mescla as estacoes pela media
-    (so entram estacoes com leitura naquele intervalo)."""
     saida = []
     for t in instantes:
         ini = t - timedelta(hours=passo_h)
@@ -63,7 +51,6 @@ def chuva_total(estacoes_regs, agora, horas):
 
 
 def serie_nivel(regs, instantes, tolerancia_h=3):
-    """Ultimo nivel conhecido ate cada instante (ate `tolerancia_h` de defasagem)."""
     com = [r for r in regs if r["nivel"] is not None]
     saida = []
     for t in instantes:
@@ -73,7 +60,6 @@ def serie_nivel(regs, instantes, tolerancia_h=3):
 
 
 def preencher(vals):
-    """Preenche buracos repetindo o vizinho (para o grafico nao quebrar)."""
     if all(v is None for v in vals):
         return []
     out, ult = [], None
@@ -104,9 +90,6 @@ def classificar(cfg, chuva24, nivel, variacao):
 
 
 def _ajustar_cota(cfg, regs):
-    """A 'cota' da ANA pode ser a leitura da regua (poucos metros) ou uma altitude (dezenas de metros).
-    Se parecer altitude (ou se config pedir 'relativo'), mostra o nivel acima do MENOR valor dos dados
-    recebidos (7 dias). A variacao e o formato do grafico nao mudam."""
     modo = cfg.get("ana_nivel_modo", "auto")
     vals = [r["nivel"] for r in regs if r["nivel"] is not None]
     if not vals:
@@ -118,13 +101,11 @@ def _ajustar_cota(cfg, regs):
 
 
 def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora, modelo=None):
-    """cem_regs: lista (por estacao) de registros CEMADEN; ana_regs: idem ANA."""
     passo = cfg["passo_horas"]
     n = cfg["janela_horas"] // passo
     inst = _pontos_tempo(agora, n, passo)
     rotulos = [t.astimezone(c.BRT).strftime("%Hh") for t in inst]
 
-    # chuva: CEMADEN (mescla) quando ha ~24 h de historico; senao ANA; senao CEMADEN parcial
     def frescas(lista):
         return [rs for rs in lista if rs and max(r["t"] for r in rs) >= agora - timedelta(hours=6)]
 
@@ -149,7 +130,6 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora, modelo=None):
     rain_series = ([{"hour": h, "mm": round(v if v is not None else 0.0, 1)} for h, v in zip(rotulos, sc)]
                    if chuva24 is not None else [])
 
-    # rio: estacao ANA com leitura mais recente
     ana_com_nivel = [rs for rs in ana_regs if any(r["nivel"] is not None for r in rs)]
     ana_com_nivel.sort(key=lambda rs: max(r["t"] for r in rs if r["nivel"] is not None), reverse=True)
     nivel_atual = variacao = None
@@ -166,7 +146,6 @@ def calcular_municipio(cfg, mun, cem_regs, ana_regs, agora, modelo=None):
             ref = serie_nivel(regs, [ult["t"] - timedelta(hours=cfg["variacao_horas"])], tolerancia_h=2)[0]
             variacao = round(ult["nivel"] - ref, 2) if ref is not None else None
 
-    # clima: leitura mais recente (ate 3 h) de cada estacao CEMADEN, mescladas pela media
     def ultimo(campo):
         vs = []
         for rs in cem_regs:
@@ -238,8 +217,7 @@ def alertas_automaticos(municipios):
 
 
 def escrever_data_js(municipios, alertas, meta):
-    corpo = ("// ARQUIVO GERADO por scripts/coletar.py — nao edite a mao.\n"
-             "(function () {\n"
+    corpo = ("(function () {\n"
              f"  window.municipalities = {json.dumps(municipios, ensure_ascii=False, indent=2)};\n"
              f"  window.seedAlerts = {json.dumps(alertas, ensure_ascii=False, indent=2)};\n"
              f"  window.dadosMeta = {json.dumps(meta, ensure_ascii=False)};\n"
@@ -247,7 +225,6 @@ def escrever_data_js(municipios, alertas, meta):
     SAIDA.write_text(corpo, encoding="utf-8")
 
 
-# ---------------------------------------------------------------------- main
 def coletar(cfg, agora):
     cem_cache, ana_cache, erros = {}, {}, []
     precisa_cem = any(m["cemaden"] for m in cfg["municipios"])
@@ -256,12 +233,12 @@ def coletar(cfg, agora):
     if precisa_cem:
         try:
             tok_cem = c.cemaden_token()
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             erros.append(f"CEMADEN token: {e}")
     if precisa_ana:
         try:
             tok_ana = c.ana_token()
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             erros.append(f"ANA token: {type(e).__name__}")
     fuso_cem = c.UTC if cfg.get("cemaden_fuso", "UTC") == "UTC" else c.BRT
     fuso_ana = c.UTC if cfg.get("ana_fuso", "BRT") == "UTC" else c.BRT
@@ -271,19 +248,18 @@ def coletar(cfg, agora):
             if cod not in cem_cache and tok_cem:
                 try:
                     cem_cache[cod] = c.normalizar_cemaden(c.cemaden_dados_recentes(tok_cem, cod), fuso_cem)
-                except Exception as e:  # noqa: BLE001
+                except Exception as e:
                     erros.append(f"CEMADEN {cod}: {type(e).__name__}")
         for cod in m["ana"]:
             if cod not in ana_cache and tok_ana:
                 try:
                     ana_cache[cod] = c.normalizar_ana(c.ana_serie(tok_ana, cod), fuso_ana, cfg.get("ana_nivel_unidade", "auto"))
-                except Exception as e:  # noqa: BLE001
+                except Exception as e:
                     erros.append(f"ANA {cod}: {type(e).__name__}")
     return cem_cache, ana_cache, erros
 
 
 def coletar_modelo(cfg):
-    """Open-Meteo por municipio (dado de modelo). Falha de um municipio nao derruba os outros."""
     out, erros = {}, []
     if not cfg.get("open_meteo", True):
         return out, erros
@@ -292,14 +268,12 @@ def coletar_modelo(cfg):
             continue
         try:
             out[m["id"]] = c.open_meteo(m["latitude"], m["longitude"])
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             erros.append(f"Open-Meteo {m['id']}: {type(e).__name__}")
     return out, erros
 
 
 def acumular_historico(cem_cache, agora):
-    """A API do CEMADEN devolve so ~1-2 h por estacao. Guardamos as leituras entre execucoes
-    (cache do GitHub Actions) para formar a janela de 24 h."""
     try:
         antigo = json.loads(HISTORICO.read_text(encoding="utf-8"))
     except (OSError, ValueError):
@@ -353,7 +327,6 @@ def main():
         print(f"  - {m['name']}: {'SEM DADOS' if m['semDados'] else m['level']} ({m['fonte'] or '-'})")
     for e in erros:
         print(f"  ! {e}")
-    # Falha o job somente se NADA foi coletado numa execucao real (evita publicar site vazio por engano)
     if "--vazio" not in sys.argv and meta["municipiosComDadosReais"] == 0:
         print("Nenhuma estacao ANA/CEMADEN retornou dados (so modelo): abortando para nao publicar painel vazio.")
         sys.exit(1)
