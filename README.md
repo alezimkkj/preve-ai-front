@@ -41,6 +41,6 @@ A aplicação atende aos cinco critérios estabelecidos para o desenvolvimento d
 3. Persistência de Dados: são utilizados recursos de armazenamento do navegador, como localStorage e sessionStorage, para manter informações conforme a necessidade de cada funcionalidade.
 4. Estabilidade do Console: a aplicação foi testada no navegador e não apresenta erros no console durante seu funcionamento.
 5. Adaptabilidade e Responsividade: o layout se adapta a diferentes tamanhos de tela, incluindo dispositivos móveis. Também são utilizadas estruturas HTML adequadas e descrições alternativas em imagens para favorecer a acessibilidade.
-   Desenvolvimento futuro
 
+Desenvolvimento futuro
 A integração com o WhatsApp está prevista como uma etapa futura do projeto. O objetivo é permitir que os usuários recebam notificações e alertas diretamente pelo aplicativo, ampliando o alcance das informações e fortalecendo a comunicação preventiva com a população.
