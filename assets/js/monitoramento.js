@@ -389,12 +389,7 @@
     if (m.demo) return 'Dados demonstrativos (fictícios) — não refletem as condições reais.';
     if (!m.lastUpdate) return 'Sem leituras recentes das estações.';
 
-    var text = 'Última atualização: ' + PA.formatDateTime(m.lastUpdate);
-    if (m.fonte) text += ' · Fonte: ' + m.fonte;
-    if (hasModelFields(m)) text += ' · Dado de modelo (não é estação): ' + m.modeloCampos.join(', ');
-    if (m.riverRelativo) text += ' · Nível relativo ao mínimo dos últimos 7 dias';
-
-    return text;
+    return 'Última atualização: ' + PA.formatDateTime(m.lastUpdate);
   }
 
   function buildBadgeText(m) {
