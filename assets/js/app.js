@@ -188,7 +188,17 @@
     button.setAttribute('aria-label', isDark ? 'Ativar tema claro' : 'Ativar tema escuro');
   }
 
+  var themeTimer = null;
+
   function toggleTheme() {
+    var root = document.documentElement;
+
+    root.classList.add('theme-transition');
+    clearTimeout(themeTimer);
+    themeTimer = setTimeout(function () {
+      root.classList.remove('theme-transition');
+    }, 500);
+
     theme = theme === 'light' ? 'dark' : 'light';
     applyTheme();
   }
